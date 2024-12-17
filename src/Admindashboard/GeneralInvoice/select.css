@@ -1,0 +1,36 @@
+/* Custom styles for the ColVis dropdown */
+.colvis-dropdown {
+    background-color: #fff; /* Background color of the dropdown */
+    border: 1px solid #ccc; /* Border color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for a nice card-like appearance */
+}
+
+/* Style for visible columns */
+.colvis_selected {
+    background-color: #5bc0de; /* Background color for visible columns */
+    color: #fff; /* Text color for visible columns */
+}
+
+/* Style for invisible columns */
+.colvis_hidden {
+    background-color: #d9534f; /* Background color for invisible columns */
+    color: #fff; /* Text color for invisible columns */
+}
+
+/* Custom style for the ColVis button */
+.btn-colvis {
+    background-color: #17a2b8; /* Background color of the button */
+    color: #fff; /* Text color of the button */
+    border: none; /* Remove the button border */
+}
+
+/* Style for the ColVis button icon (optional) */
+.btn-colvis .dt-button-icon:before {
+    content: "\f070"; /* Change the button icon (Font Awesome icon code) */
+    font-size: 18px; /* Adjust the icon size */
+}
+/* Style for non-visible columns */
+#DiscountTable tr td.no-toggle {
+    background-color: #d9534f; /* Background color for non-visible columns */
+    color: #fff; /* Text color for non-visible columns */
+}

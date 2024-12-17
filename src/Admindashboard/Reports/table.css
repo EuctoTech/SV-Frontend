@@ -1,0 +1,47 @@
+ 
+ 
+    .printcustom  {
+      padding: 12rem; /* Adjust the padding value as needed */
+    }
+  @media print {
+    .MuiButtonBase-root,
+    .dataTables_info, 
+    .dataTables_paginate, 
+    .paging_simple_numbers,
+    .dt-buttons ,
+    .dataTables_length,
+    .dataTables_filter
+    {
+      display: none !important;
+    }
+  }
+  
+  #ThirdStandardFeeTable3 {
+    width: 100%;
+    table-layout: fixed;
+    overflow: visible;
+  }
+  @media print {
+    /* Hide horizontal scrollbar */
+    body {
+      overflow-x: hidden !important;
+    }
+  
+    /* Adjust table styles */
+    #ThirdStandardFeeTable3 {
+      width: auto !important;
+      max-width: 100% !important;
+      table-layout: auto !important;
+      overflow-x: hidden !important;
+    }
+  
+    #ThirdStandardFeeTable3 th,
+    #ThirdStandardFeeTable3 td {
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+   
+  }
+  
+  

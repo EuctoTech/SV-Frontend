@@ -1,0 +1,80 @@
+/* Custom styles for DataTables */
+.dataTables_wrapper {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+table.dataTable {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  border: 1px solid #dee2e6;
+}
+
+table.dataTable thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+  background-color: #f1f3f5;
+  color: #495057;
+  font-weight: 600;
+  padding: 12px;
+  text-align: left;
+}
+
+table.dataTable tbody td {
+  padding: 12px;
+  vertical-align: middle;
+  border-top: 1px solid #dee2e6;
+}
+
+table.dataTable tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+table.dataTable tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+.dataTables_info, .dataTables_paginate {
+  margin-top: 15px;
+}
+
+.dataTables_filter input, .dataTables_length select {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 6px 12px;
+}
+
+.dt-buttons {
+  margin-bottom: 15px;
+}
+
+.dt-button {
+  padding: 6px 12px;
+  margin-right: 5px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dt-button:hover {
+  background-color: #0056b3;
+}
+
+.text-dark {
+  color: #343a40;
+}
+
+/* Footer styles */
+table.dataTable tfoot th {
+  padding: 12px;
+  border-top: 2px solid #dee2e6;
+  font-weight: 600;
+  background-color: #e9ecef;
+}

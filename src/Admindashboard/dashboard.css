@@ -1,0 +1,1017 @@
+l.reminderDate {
+  width: 100%;
+  height: 40px;
+}
+
+.typed {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 3s steps(40, end);
+  border-right: 2px solid;
+  padding-right: 5px;
+}
+
+.damIt {
+  max-height: 500px !important;
+  overflow: scroll;
+}
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.datepicker-wrapper {
+  width: 100%;
+  height: 55px;
+}
+@media print {
+  /* Hide the sidebar in the print view */
+  .sidebar {
+    display: none;
+  }
+
+  /* Additional styles for the print view, if needed */
+  /* For example, you might want to adjust the layout or font sizes for printing */
+}
+/* For Invoice Table DatePicker */
+input[type="date"] {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #555;
+  background-color: #f5f5f5;
+  outline: none;
+}
+
+input[type="date"]:hover {
+  border-color: #aaa;
+}
+
+input[type="date"]:focus {
+  border-color: #555;
+  box-shadow: 0 0 5px rgba(85, 85, 85, 0.3);
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Main Page Login Design   */
+
+@media (max-width: 750px) {
+  .circular_imageAll {
+    text-align: center;
+  }
+  .exploreProduct {
+    padding-bottom: 20px;
+  }
+  /* .responsiveMain{
+    display: block !important;
+  }  */
+  .DesktopresponsiveMain {
+    display: none;
+  }
+}
+
+@media (min-width: 751px) {
+  .responsiveMain {
+    display: none !important;
+  }
+}
+
+.roundSection {
+  text-align: center;
+  padding-top: 10px;
+}
+
+.circular_image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: none;
+  border: 2px solid #f5b745;
+  display: inline-block;
+  padding: 10px;
+  cursor: pointer;
+}
+.circular_image img {
+  width: 100%;
+}
+
+.circular_image:hover {
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+/* Styles for the table container */
+.container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+#DiscountTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#DiscountTable thead th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-align: left;
+  padding: 8px;
+}
+
+#DiscountTable td,
+#DiscountTable th {
+  padding: 8px;
+  border: 1px solid #fff;
+}
+
+#DiscountTable tbody tr:nth-child(odd) {
+  background-color: #dcdcdc;
+}
+
+/* Media queries for responsive table */
+@media (max-width: 768px) {
+  #DiscountTable {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  #DiscountTable {
+    font-size: 12px;
+  }
+}
+
+.message-input {
+  padding: 10px;
+  border-radius: 10px;
+  margin-right: 10px;
+  width: 300px;
+}
+
+.add-notification-button {
+  background-color: green;
+  color: white;
+  padding: 10px;
+  font-weight: 500;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .editable-row .ant-table-cell {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
+.checkbox-wrapper-51 input[type="checkbox"] {
+  visibility: hidden;
+  display: none;
+}
+
+.checkbox-wrapper-51 .toggle {
+  position: relative;
+  display: block;
+  width: 42px;
+  height: 24px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-51 .toggle:before {
+  content: "";
+  position: relative;
+  top: 1px;
+  left: 1px;
+  width: 40px;
+  height: 22px;
+  display: block;
+  background: #c8ccd4;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+.checkbox-wrapper-51 .toggle span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  display: block;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(154, 153, 153, 0.75);
+  transition: all 0.2s ease;
+}
+.checkbox-wrapper-51 .toggle span svg {
+  margin: 7px;
+  fill: none;
+}
+.checkbox-wrapper-51 .toggle span svg path {
+  stroke: #c8ccd4;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 24;
+  stroke-dashoffset: 0;
+  transition: all 0.5s linear;
+}
+.checkbox-wrapper-51 input[type="checkbox"]:checked + .toggle:before {
+  background: #52d66b;
+}
+.checkbox-wrapper-51 input[type="checkbox"]:checked + .toggle span {
+  transform: translateX(18px);
+}
+.checkbox-wrapper-51 input[type="checkbox"]:checked + .toggle span path {
+  stroke: #52d66b;
+  stroke-dasharray: 25;
+  stroke-dashoffset: 25;
+}
+
+.notification-popup {
+  position: relative;
+  width: 30%;
+  margin: 0 auto;
+}
+
+.notification-button {
+  background-color: #333333;
+  color: #ffffff;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup-content {
+  background-color: #ffffff;
+  width: 90%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.popup-body {
+  margin-top: 20px;
+}
+
+/* Additional styles as per your requirement */
+
+/* error 404 Backto home page button CSS */
+.button-82-pushable {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 4px;
+  transition: filter 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-82-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+  transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+.button-82-edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(
+    to left,
+    hsl(340deg 100% 16%) 0%,
+    hsl(340deg 100% 32%) 8%,
+    hsl(340deg 100% 32%) 92%,
+    hsl(340deg 100% 16%) 100%
+  );
+}
+
+.button-82-front {
+  display: block;
+  position: relative;
+  padding: 12px 27px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  color: white;
+  background: hsl(345deg 100% 47%);
+  will-change: transform;
+  transform: translateY(-4px);
+  transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+@media (min-width: 768px) {
+  .button-82-front {
+    font-size: 1.25rem;
+    padding: 12px 42px;
+  }
+}
+
+.button-82-pushable:hover {
+  filter: brightness(110%);
+  -webkit-filter: brightness(110%);
+}
+
+.button-82-pushable:hover .button-82-front {
+  transform: translateY(-6px);
+  transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+.button-82-pushable:active .button-82-front {
+  transform: translateY(-2px);
+  transition: transform 34ms;
+}
+
+.button-82-pushable:hover .button-82-shadow {
+  transform: translateY(4px);
+  transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+.button-82-pushable:active .button-82-shadow {
+  transform: translateY(1px);
+  transition: transform 34ms;
+}
+
+.button-82-pushable:focus:not(:focus-visible) {
+  outline: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.button-61 {
+  align-items: center;
+  appearance: none;
+  border-radius: 4px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 1px -2px, rgba(0, 0, 0, 0.14) 0 2px 2px 0,
+    rgba(0, 0, 0, 0.12) 0 1px 5px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: Roboto, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  justify-content: center;
+  letter-spacing: 0.0892857em;
+  line-height: normal;
+  outline: none;
+  overflow: visible;
+  padding: 0 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  will-change: transform, opacity;
+}
+
+.button-61:not(:disabled) {
+  background-color: #f74c52;
+}
+
+.button-61:active {
+  box-shadow: rgba(0, 0, 0, 0.2) 0 5px 5px -3px,
+    rgba(0, 0, 0, 0.14) 0 8px 10px 1px, rgba(0, 0, 0, 0.12) 0 3px 14px 2px;
+  background: #a91935;
+}
+
+.headerNav {
+  position: -webkit-sticky;
+  z-index: 99999;
+  position: sticky;
+  top: 0;
+}
+
+.custom-input:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.imageSizeHrtable {
+  width: 190px;
+  height: 210px;
+  margin: "auto";
+  display: "block";
+  padding-left: 15px;
+  padding-top: 10px;
+}
+
+.imageSize {
+  width: 150px;
+  height: 200px;
+  margin: "auto";
+  display: "block";
+  border-radius: 11px;
+}
+
+.han[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.uploadProfileBtn {
+  background-color: #000;
+  color: #fff;
+  border-radius: 4px;
+}
+.uploadProfileBtn:hover {
+  background-color: rgb(201, 206, 179);
+  color: #000;
+}
+
+.custom-file-upload {
+  border: none;
+  text-align: center;
+}
+
+.apper {
+  text-align: center;
+}
+
+#parentM li a:hover {
+  background-color: #cf1727;
+}
+
+.navmenuside {
+  position: relative;
+  top: 16%;
+  left: 32%;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.menuText {
+  padding: 15px 19px;
+  font-size: 16px;
+}
+
+.menuSpanText {
+  position: relative;
+  top: 3px;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  width: 16.7%;
+}
+
+.damIt {
+  height: 100%;
+  overflow: scroll;
+}
+
+.damIt::-webkit-scrollbar {
+  display: none;
+}
+
+.damDiv {
+  display: block;
+  /* overflow: scroll; */
+  /* height: 100%; */
+}
+
+/* .damDiv::-webkit-scrollbar{
+    display: none;
+} */
+
+.box {
+  width: 500px;
+  height: 50px;
+  background-color: white;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.box > i {
+  font-size: 20px;
+  color: #777;
+}
+
+.box > input {
+  flex: 1;
+  height: 40px;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  padding-left: 10px;
+}
+
+.hrAdminDashboard {
+  border-top: 3px solid;
+  opacity: 200.25;
+  width: 16%;
+  color: red;
+  margin-top: 0px;
+}
+.options_ul{
+  border-top: 1px solid gray;
+  width: 100%;
+  margin-top: 0px;
+}
+.feeMapping {
+  border-top: 3px solid;
+  opacity: 200.25;
+  width: 10%;
+  color: red;
+  margin-top: 0px;
+}
+.settingHr {
+  border-top: 3px solid;
+  opacity: 200.25;
+  width: 16%;
+  color: red;
+  margin-top: 0px;
+}
+.calAdminDashboard {
+  border-top: 3px solid;
+  opacity: 200.25;
+  width: 12%;
+  color: red;
+  margin-top: 0px;
+}
+
+.earnAdminDashboard {
+  border-top: 3px solid;
+  opacity: 200.25;
+  width: 7%;
+  color: red;
+  margin-top: 0px;
+}
+
+.card1 {
+  padding: 8px;
+}
+
+.vertical {
+  border-left: 2px solid red;
+  height: 100px;
+  position: absolute;
+  left: 35%;
+}
+
+.verticalReminder {
+  border-left: 2px solid red;
+  height: 60px;
+}
+
+.chartDashboard {
+  box-sizing: border-box;
+  /* display: block; */
+  height: 80vh;
+  width: 90vw;
+  max-height: 597px;
+  max-width: 954px;
+}
+
+.justify-content-between {
+  justify-content: flex-start !important;
+}
+
+li.nav-item {
+  width: 100%;
+}
+
+.button-37 {
+  background-color: #13aa52;
+  border: 1px solid #13aa52;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  outline: none;
+  outline: 0;
+  padding: 10px 25px;
+  text-align: center;
+  transform: translateY(0);
+  transition: transform 150ms, box-shadow 150ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-37:hover {
+  box-shadow: rgba(0, 0, 0, 0.15) 0 3px 9px 0;
+  transform: translateY(-2px);
+}
+
+@media (min-width: 768px) {
+  .button-37 {
+    padding: 10px 30px;
+  }
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.button-17 {
+  align-items: center;
+  appearance: none;
+  background-color: #fbfbf2;
+  border-radius: 24px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
+    rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
+  box-sizing: border-box;
+  color: #3c4043;
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 48px;
+  justify-content: center;
+  letter-spacing: 0.25px;
+  line-height: normal;
+  max-width: 100%;
+  overflow: visible;
+  padding: 2px 24px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: auto;
+  will-change: transform, opacity;
+  z-index: 0;
+}
+
+.button-17:hover {
+  background: #f6f9fe;
+  color: #2f6d24;
+}
+
+.button-17:active {
+  box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%),
+    0 8px 12px 6px rgb(60 64 67 / 15%);
+  outline: none;
+}
+
+.button-17:focus {
+  outline: none;
+  border: 2px solid #4285f4;
+}
+
+.button-17:not(:disabled) {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+.button-17:not(:disabled):hover {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 2px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 6px 10px 4px;
+}
+
+.button-17:not(:disabled):focus {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+.button-17:not(:disabled):active {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+    rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
+}
+
+.button-17:disabled {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+.button-18 {
+  align-items: center;
+  appearance: none;
+  background-color: #caf0df;
+  border-radius: 24px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
+    rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
+  box-sizing: border-box;
+  color: #3c4043;
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 48px;
+  justify-content: center;
+  letter-spacing: 0.25px;
+  line-height: normal;
+  max-width: 100%;
+  overflow: visible;
+  padding: 2px 24px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: auto;
+  will-change: transform, opacity;
+  z-index: 0;
+}
+
+.button-18:hover {
+  background: #addcde;
+  color: #000;
+}
+
+.button-18:active {
+  box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%),
+    0 8px 12px 6px rgb(60 64 67 / 15%);
+  outline: none;
+}
+
+.button-18:focus {
+  outline: none;
+  border: 2px solid #4285f4;
+}
+
+.button-18:not(:disabled) {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+.button-18:not(:disabled):hover {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 2px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 6px 10px 4px;
+}
+
+.button-18:not(:disabled):focus {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+.button-18:not(:disabled):active {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+    rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
+}
+
+.button-18:disabled {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+    rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+}
+
+.css-1xhypcz-MuiStack-root > .MuiTextField-root {
+  width: 100% !important;
+}
+
+.text {
+  white-space: nowrap; /* prevent text from wrapping */
+  overflow: hidden; /* hide overflowing text */
+  text-overflow: ellipsis; /* add "..." at the end of the visible text */
+  max-width: 100%; /* set a maximum width for the container */
+}
+
+.text:hover {
+  white-space: normal; /* allow text to wrap */
+  overflow: visible; /* show overflowing text */
+  text-overflow: clip; /* remove "..." at the end of the visible text */
+}
+
+.button-42 {
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #ff7e31, #e62c03);
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Inter, -apple-system, system-ui, Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  height: 40px;
+  line-height: 40px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  pointer-events: auto;
+  position: relative;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 100%;
+  z-index: 9;
+  border: 0;
+  transition: box-shadow 0.2s;
+}
+
+.button-42:hover {
+  box-shadow: rgba(253, 76, 0, 0.5) 0 3px 8px;
+}
+
+.checkbox-wrapper-3 input[type="checkbox"] {
+  visibility: hidden;
+  display: none;
+}
+
+.checkbox-wrapper-3 .toggle {
+  position: relative;
+  display: block;
+  width: 40px;
+  height: 20px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-3 .toggle:before {
+  content: "";
+  position: relative;
+  top: 3px;
+  left: 3px;
+  width: 34px;
+  height: 14px;
+  display: block;
+  background: #9a9999;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+.checkbox-wrapper-3 .toggle span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  display: block;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(154, 153, 153, 0.5);
+  transition: all 0.2s ease;
+}
+.checkbox-wrapper-3 .toggle span:before {
+  content: "";
+  position: absolute;
+  display: block;
+  margin: -18px;
+  width: 56px;
+  height: 56px;
+  background: rgba(79, 46, 220, 0.5);
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 1;
+  pointer-events: none;
+}
+
+.checkbox-wrapper-3 #cbx-3:checked + .toggle:before {
+  background: #947ada;
+}
+.checkbox-wrapper-3 #cbx-3:checked + .toggle span {
+  background: #4f2edc;
+  transform: translateX(20px);
+  transition: all 0.2s cubic-bezier(0.8, 0.4, 0.3, 1.25), background 0.15s ease;
+  box-shadow: 0 3px 8px rgba(79, 46, 220, 0.2);
+}
+.checkbox-wrapper-3 #cbx-3:checked + .toggle span:before {
+  transform: scale(1);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+/* Checkbox for sponsor payment */
+
+.checkbox-wrapper-40 {
+  --borderColor: #19a84c;
+  --borderWidth: 0.125em;
+}
+
+.checkbox-wrapper-40 label {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.checkbox-wrapper-40 input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  vertical-align: middle;
+  background: #fff;
+  font-size: 1.8em;
+  border-radius: 0.125em;
+  display: inline-block;
+  border: var(--borderWidth) solid var(--borderColor);
+  width: 1em;
+  height: 1em;
+  position: relative;
+}
+.checkbox-wrapper-40 input[type="checkbox"]:before,
+.checkbox-wrapper-40 input[type="checkbox"]:after {
+  content: "";
+  position: absolute;
+  background: var(--borderColor);
+  width: calc(var(--borderWidth) * 3);
+  height: var(--borderWidth);
+  top: 50%;
+  left: 10%;
+  transform-origin: left center;
+}
+.checkbox-wrapper-40 input[type="checkbox"]:before {
+  transform: rotate(45deg)
+    translate(calc(var(--borderWidth) / -2), calc(var(--borderWidth) / -2))
+    scaleX(0);
+  transition: transform 200ms ease-in 200ms;
+}
+.checkbox-wrapper-40 input[type="checkbox"]:after {
+  width: calc(var(--borderWidth) * 5);
+  transform: rotate(-45deg) translateY(calc(var(--borderWidth) * 2)) scaleX(0);
+  transform-origin: left center;
+  transition: transform 200ms ease-in;
+}
+.checkbox-wrapper-40 input[type="checkbox"]:checked:before {
+  transform: rotate(45deg)
+    translate(calc(var(--borderWidth) / -2), calc(var(--borderWidth) / -2))
+    scaleX(1);
+  transition: transform 200ms ease-in;
+}
+.checkbox-wrapper-40 input[type="checkbox"]:checked:after {
+  width: calc(var(--borderWidth) * 5);
+  transform: rotate(-45deg) translateY(calc(var(--borderWidth) * 2)) scaleX(1);
+  transition: transform 200ms ease-out 200ms;
+}
+.checkbox-wrapper-40 input[type="checkbox"]:focus {
+  outline: calc(var(--borderWidth) / 2) dotted rgba(0, 0, 0, 0.25);
+}

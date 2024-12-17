@@ -1,0 +1,206 @@
+*{
+    font-family: 'poppins';
+}
+
+.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus{
+    box-shadow: none;
+}
+
+.dropdown-menu{
+  left: inherit !important;
+  right: 0 !important;
+}
+
+.react-datepicker-wrapper{
+  width: 100% !important;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
+.DashboardBox{
+    transition: transform .2s;
+}
+.DashboardBox:hover {
+    transform: scale(1.1);
+    color: #000 !important;
+}
+
+.DashboardBoxLogout{
+    transition: transform .2s;
+}
+.DashboardBoxLogout:hover {
+    transform: scale(1.1);
+    color: red !important;
+}
+
+.DashboardAppointment {
+  transition: transform 0.5s;
+}
+
+.DashboardAppointment:hover {
+  transform: scale(1.0);
+  color: green !important;
+}
+.DashboardAppointmentTable {
+  transition: transform 0.5s;
+}
+
+.DashboardAppointmentTable:hover {
+  transform: scale(1.1);
+  color: rgb(255, 255, 255) !important;
+}
+
+
+.optionBox .col-md-4,.optionBox .col-md-3{
+ margin: 20px 0px;
+}
+
+
+
+.sidenav {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    right: -250px; 
+    background-color: #CCA047;
+    padding-top: 60px;
+    transition: right 0.3s;
+  }
+  
+  
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #fff;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidenav a:hover {
+    color: #000;
+  }
+  
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  #main {
+    transition: margin-left 0.5s;
+    padding: 16px;
+  }
+  
+
+  .sidenav.open {
+    right: 0; 
+    width: 350px;
+    z-index: 999 !important;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidenav {
+      padding-top: 15px;
+    }
+    .sidenav a {
+      font-size: 18px;
+    }
+  }
+  
+
+  /* Registerform */
+
+
+  .checkbox-wrapper-37 input[type="checkbox"] {
+    display: none;
+  }
+
+  .checkbox-wrapper-37 .terms-label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  .checkbox-wrapper-37 .terms-label .label-text {
+    margin-left: 10px;
+  }
+
+  .checkbox-wrapper-37 .checkbox-svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .checkbox-wrapper-37 .checkbox-box {
+    fill: rgb(211, 211, 211);
+    stroke: #07D410;
+    stroke-dasharray: 800;
+    stroke-dashoffset: 800;
+    transition: stroke-dashoffset 0.6s ease-in;
+  }
+
+  .checkbox-wrapper-37 .checkbox-tick {
+    stroke: #07D410;
+    stroke-dasharray: 172;
+    stroke-dashoffset: 172;
+    transition: stroke-dashoffset 0.6s ease-in;
+  }
+
+  .checkbox-wrapper-37 input[type="checkbox"]:checked + .terms-label .checkbox-box,
+  .checkbox-wrapper-37 input[type="checkbox"]:checked + .terms-label .checkbox-tick {
+    stroke-dashoffset: 0;
+  }
+
+  /* Registerform */
+
+  /* Model Popup*/
+
+.large-modal-dialog {
+  max-width: 900px; 
+}
+
+.large-modal-content {
+  padding: 20px;
+}
+
+/* SearchComponent.css */
+
+
+.search__input {
+  width: 100%;
+  padding: 12px 24px;
+  background-color: transparent;
+  transition: transform 250ms ease-in-out;
+  font-size: 14px;
+  line-height: 18px;
+  color: #575756;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
+  background-position: 95% center;
+  border-radius: 50px;
+  border: 1px solid #575756;
+  transition: all 250ms ease-in-out;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.search__input::placeholder {
+  color: rgba(87, 87, 86, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.search__input:hover,
+.search__input:focus {
+  padding: 12px 0;
+  outline: 0;
+  border: 1px solid transparent;
+  border-bottom: 1px solid #575756;
+  border-radius: 0;
+  background-position: 100% center;
+}
+

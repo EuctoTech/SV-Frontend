@@ -1,0 +1,8 @@
+  const [reminder, setReminder] = useState([])
+  const [newDate, setNewDate] = useState('')
+  const [newTitle, setnewTitle] = useState('')
+  const [newDescription, setNewDescription] = useState('')
+  const [newColor, setNewColor] = useState('')
+  const [newSendTo, setNewSendTo] = useState('')
+value={newColor} onChange={(e)=> setNewColor(e.target.value)}
+  value={newDate} onChange={(e)=> setNewDate(e.target.value) }

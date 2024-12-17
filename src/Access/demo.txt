@@ -1,0 +1,933 @@
+import React, { useState, useEffect } from 'react';
+import Navbar from '../Navbarall';
+import { Row, Col, Form, Table, Button } from 'react-bootstrap';
+import { RiBillLine } from 'react-icons/ri';
+import { IoChevronBackCircleOutline } from 'react-icons/io5';
+import DatePicker from 'react-datepicker';
+import { IoIosRemoveCircleOutline } from 'react-icons/io';
+import { RadioGroup, FormControlLabel, Radio, Checkbox } from '@mui/material';
+import { MdFileDownloadDone } from 'react-icons/md';
+import { FaSearchengin } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
+import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
+
+const BillingForm = () => {
+  const [billingDate, setBillingDate] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [rows, setRows] = useState([]);
+  const [inputValues, setInputValues] = useState([]);
+  const [showInput, setShowInput] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [selectBill, setSelectBill] = useState(null);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [patientOptions, setPatientOptions] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+
+  const [newPatientName, setNewPatientName] = useState('');
+  const [newDate, setNewDate] = useState('')
+  const [newOPIP, setNewOPIP] = useState('')
+  const [newAdvance, setNewAdvance] = useState('')
+  const [newNote, setNewNote] = useState('')
+  const [newDoctorID, setNewDoctorID] = useState('')
+  const [newRefDoctorID, setNewRefDoctorID] = useState('')
+  const [newServices, setNewServices] = useState('')
+  const [newAmount, setNewAmount] = useState('')
+  const [newDiscountPercentage, setNewDiscountPercentage] = useState('')
+  const [newDiscount, setNewDiscount] = useState('')
+  const [newRemark, setNewRemark] = useState('')
+  const [selectedId, setSelectedId] = useState('');
+
+  const [doctorOptions, setDoctorOptions] = useState([]);
+  const [refIdOptions, setRefIdOptions] = useState([]);
+  
+  const [doctorSearchQuery, setDoctorSearchQuery] = useState('');
+  const [refIdSearchQuery, setRefIdSearchQuery] = useState('');
+  const [formData, setFormData] = useState(new FormData());
+
+  const [serviceOptions, setServiceOptions] = useState([]);
+  const [servicesData, setServicesData] = useState([]);
+  const [serviceSearchQuery, setServiceSearchQuery] = useState('');
+
+
+///Fetch Start///
+const fetchPatientData = async (id) => {
+  try {
+    const response = await fetch(`https://euctostaging.com/prolife/api/bills`);
+    const data = await response.json();
+    console.log(data);
+    setSelectBill(data.bill_no);
+    setSelectedPatient(data.patient_id);
+    // setPatientOptions(data.patient_id);
+    setNewDate(data.date);
+    setNewOPIP(data.op_ip);
+    setNewAdvance(data.advance);
+    setNewNote(data.note);
+    setNewDoctorID(data.doctor);
+    setNewRefDoctorID(data.rfdoctor);
+    setNewServices(data.services);
+    setNewAmount(data.amount);
+    setNewDiscountPercentage(data.discount_amount);
+    setNewDiscount(data.discount_amount);
+    setNewRemark(data.remarks);
+ 
+   
+    const formData = new FormData();
+     formData.append('bill_no', data.bill_no);
+     formData.append('patient_id', data.patient_id);
+     formData.append('date', data.date);
+     formData.append('op_ip', data.op_ip);
+     formData.append('advance', data.advance);
+     formData.append('note', data.note);
+     formData.append('doctor', data.doctor);
+     formData.append('rfdoctor', data.rfdoctor);
+     formData.append('services', data.services);
+     formData.append('discount_amount', data.discount_amount);
+     formData.append('remarks', data.remarks);
+     setFormData(formData);
+
+  } catch (error) {
+    console.error('Error fetching patient data:', error);
+  }
+  };
+  // useEffect(() => {
+  //   if (selectedId) {
+  //     fetchPatientData(selectedId);
+  //   }
+  // }, [selectedId]);
+
+
+///Fetch End///
+
+
+
+
+
+  // Fetch initial data when the component mounts
+  useEffect(() => {
+    // Fetch branch data and all bill numbers from the API
+    fetch('https://euctostaging.com/prolife/api/bills/newBill', {
+      method: 'POST'
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Extract the data for the selected bill
+        const selectedBill = {
+          value: data.billno,
+          label: data.billno
+        };
+
+        // Fetch all bill numbers
+        fetch('https://euctostaging.com/prolife/api/bills/all')
+          .then(response => response.json())
+          .then(allData => {
+            console.log(allData);
+
+            // Create an array of all bill options
+            const allBillOptions = allData.map(bill => ({
+              value: bill.bill_no,
+              label: bill.bill_no
+            }));
+
+            // Set the options state including the selected bill
+            setOptions([selectedBill, ...allBillOptions]);
+            setSelectBill(selectedBill); // Set the selected bill
+          })
+          .catch(error => console.error('Error fetching all bill numbers:', error));
+      })
+      .catch(error => console.error('Error fetching branch data:', error));
+  }, []);
+
+  const handleBillChange = selectedOption => {
+    setSelectBill(selectedOption);
+  };
+
+  // Fetch patient options based on search query
+  useEffect(() => {
+    // console.log('searchQuery:', searchQuery);
+
+    if (searchQuery.length >= 2) {
+      console.log('Fetching patient options...');
+      fetch(`https://euctostaging.com/prolife/api/masters/patients/search/${searchQuery}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log('API response:', data);
+          const options = data.map(patient => ({
+            value: patient.id,
+            label: `${patient.uhid_patient_name}`
+          }));
+          setPatientOptions(options);
+        })
+        .catch(error => console.error('Error fetching patient options:', error));
+    } else {
+      setPatientOptions([]);
+    }
+  }, [searchQuery]);
+
+  const handleSearchChange = newValue => {
+    setSearchQuery(newValue);
+  };
+
+  const handleSelectChange = selectedOption => {
+    setSelectedPatient(selectedOption);
+  };
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////
+
+  const handleSubmit = async () => {
+    // Create a new patient using API request
+    try {
+      const formData = new FormData();
+      formData.append('patient_name', newPatientName);
+
+      const response = await fetch('https://euctostaging.com/prolife/api/masters/patient', {
+        method: 'POST',
+        // headers: {
+        //   'Content-Type': 'multipart/form-data', // Change this to 'multipart/form-data'
+        // },
+        body: formData,
+      });
+      const responseData = await response.json(); // Parse response as JSON
+
+      if (response.ok) {
+        // Handle successful response
+        console.log('New patient created successfully');
+        setSelectedPatient({
+          value: responseData.uhid, // Assuming 'uhid' is the identifier for the patient
+          label: `${responseData.uhid} - ${responseData.patient_name}`,
+        });
+  
+        console.log(responseData);
+       } else {
+        // Handle error response
+        console.error('Error creating new patient');
+        // Handle error state or show error message
+      }
+    } catch (error) {
+      console.error('Error creating new patient:', error);
+      // Handle error state or show error message
+    }
+  };
+
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+// Handle doctor search change
+const handleSearchChangedr = newValue => {
+  setDoctorSearchQuery(newValue);
+
+  // Fetch doctor options based on search query
+  if (newValue.length >= 2) {
+    fetch(`https://euctostaging.com/prolife/api/masters/doctors/search/${newValue}`)
+      .then(response => response.json())
+      .then(data => {
+        const options = data.map(doctor => ({
+          value: `${doctor.id}`,
+          label: `Dr. ${doctor.name}`
+        }));
+        setDoctorOptions(options);
+      })
+      .catch(error => console.error('Error fetching doctor options:', error));
+  } else {
+    setDoctorOptions([]);
+  }
+}
+
+// Handle reference ID search change
+const handleSearchChangerefdr = newValue => {
+  setRefIdSearchQuery(newValue);
+
+  // Fetch reference ID options based on search query
+  if (newValue.length >= 2) {
+    fetch(`https://euctostaging.com/prolife/api/masters/doctors/search/${newValue}`)
+      .then(response => response.json())
+      .then(data => {
+        const options = data.map(doctor => ({
+          value: `${doctor.id}`,
+          label: `Dr. ${doctor.name}`
+        }));
+        setRefIdOptions(options);
+      })
+      .catch(error => console.error('Error fetching reference ID options:', error));
+  } else {
+    setRefIdOptions([]);
+  }
+}
+  //////////////////////////////////////////////////////////////////////////////////////////////
+
+  const handleServiceSearchChange = newValue => {
+    setServiceSearchQuery(newValue);
+
+    // Fetch service options based on search query
+    if (newValue.length >= 2) {
+      fetch(`https://euctostaging.com/prolife/api/masters/services/search/${newValue}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          const options = data.map(service => ({
+            value: service.id,
+            label: `${service.id} - ${service.service_name}`
+          }));
+          setServiceOptions(options);
+        })
+        .catch(error => console.error('Error fetching service options:', error));
+    } else {
+      setServiceOptions([]);
+    }
+  };
+/////////////////////
+  
+// const getServiceRate = async (selectedServiceId) => {
+//   try {
+//     const response = await fetch(`https://euctostaging.com/prolife/api/masters/service/${selectedServiceId}`);
+//     const data = await response.json();
+//     return data.rate || '';
+//   } catch (error) {
+//     console.error('Error fetching service rate:', error);
+//     return '';
+//   }
+//   await new Promise(resolve => setTimeout(resolve, 1000)); // Delay for 1 second
+
+// };
+
+const fetchServiceRate = async (serviceId) => {
+  try {
+    const response = await fetch(`https://euctostaging.com/prolife/api/masters/service/${serviceId}`);
+    const data = await response.json();
+    return data.rate;
+  } catch (error) {
+    console.error('Error fetching service rate:', error);
+    return null;
+  }
+};
+
+  //////////////////////////////////////////////////////////////////
+    const handleAddRow = () => {
+      setShowInput(true);
+      setInputValues([...inputValues, {}, {}, {}, {}]); // Add 4 empty objects
+    };
+  
+    const handleInputChanges = (index, field, value) => {
+      const newInputValues = [...inputValues];
+      newInputValues[index][field] = value;
+      setInputValues(newInputValues);
+    };
+  
+    const handleRemoveRow = (index) => {
+      const newInputValues = [...inputValues];
+      newInputValues.splice(index, 1);
+      setInputValues(newInputValues);
+    };
+  
+    const handleConfirmInput = () => {
+      if (inputValues.length > 0) {
+        setRows([...rows, ...inputValues]);
+      }
+      setInputValues([]);
+      setShowInput(false);
+    };
+  
+    const handleCheckboxChange = () => {
+      setIsChecked(!isChecked);
+      if (!isChecked) {
+        setInputValue('');
+      }
+    };
+
+    const handleBillingDate = (date)=>{
+        setBillingDate(date)
+    }
+  return (
+    <div>
+      <Navbar/>
+      <div className='py-4 px-4'>
+        <div style={{border:'1px solid #000', backgroundColor:'white', borderRadius:'10px'}} className='py-3 px-3' >
+            <div className='row pt-3 px-3'>
+            <Col><h4> <RiBillLine className='mr-1'/>Generate Billing</h4></Col>
+            <Col style={{textAlign:'right'}}>
+              <NavLink to='/Main/Billing/BillingTable'> <IoChevronBackCircleOutline size={36} style={{color:'red', cursor:'pointer'}}/></NavLink>
+            </Col>
+          </div><hr/>
+ {/*------------ Billing Filter ----------- */}
+ <Form>
+              <Row>
+                <Col>
+                <Form.Group className="mb-2">
+                        <Form.Label className='mb-0'>Bill Number</Form.Label>
+                        <Select options={options} value={selectBill} onChange={handleBillChange} />
+                      </Form.Group>
+                </Col>
+                <Col className='pt-4'>
+                 <Button variant="outline-success"><FaSearchengin className='mr-2'  />Search</Button>
+                </Col>
+              </Row><hr/>
+{/*---------------- Patient Filter -------------------- */}
+              <Row>
+                <Col>
+                <Form.Group className="mb-2">
+                <div>
+                <Form.Group controlId="patientSearch">
+          <Form.Label>Patient ID and Name</Form.Label>
+          <CreatableSelect
+            isClearable
+            options={patientOptions}
+            value={selectedPatient}
+            onInputChange={handleSearchChange}
+            onChange={handleSelectChange}
+          />
+        </Form.Group>
+    </div>
+                      </Form.Group>
+                </Col>
+             <Col>
+              <Form.Group className="mb-2">
+                <Form.Label className='mb-0'>Create Patient</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={newPatientName}
+                  onChange={event => setNewPatientName(event.target.value)}
+                />
+              </Form.Group>
+            </Col>
+            <Col className='pt-4'>
+              <Button variant="outline-success" onClick={handleSubmit}>
+                <MdFileDownloadDone className='mr-2' />Add patient
+              </Button>
+            </Col>
+          </Row><hr/>
+              <Row>
+                <Col>
+                <Form.Group className="mb-2">
+                        <Form.Label className='mb-0'>Gender</Form.Label>
+                        <Form.Control as="select" >
+                          <option value='' >--Select--</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                        </Form.Control>
+                      </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group className="mb-2">
+                  <Form.Label className='mb-0'>DOB</Form.Label>
+                        <DatePicker
+                        placeholderText="DD/MM/YYYY"
+                        selected={billingDate}
+                        onChange={handleBillingDate}
+                        dateFormat="dd/MM/yyyy"
+                        showYearDropdown
+                        scrollableYearDropdown
+                        showMonthDropdown
+                        scrollableMonthYearDropdown
+                        customInput={
+                          <input type="text" id="txtDate" name="SelectedDate"   style={{ cursor: 'pointer', width:'100%', height:'35px' }}/>}/>
+                  </Form.Group>
+                </Col>
+              </Row>
+         
+              <Form.Group>
+                    <RadioGroup  row className='ml-2'>
+                      <FormControlLabel value="OP" control={<Radio />} label="OP" />
+                      <FormControlLabel value="IP" control={<Radio />} label="IP" />
+                    </RadioGroup>
+                  </Form.Group>
+             <div>
+                <Form.Check
+                    type="checkbox"
+                    label="Advance Amount"
+                    checked={isChecked}
+                    onChange={handleCheckboxChange}/>    
+                {isChecked && (
+                  <Row>
+                    <Col>
+                    <div style={{ marginTop: '10px' }}>
+                      <input type="text"  placeholder="Enter Amount" style={{ width: '100%', padding: '5px' }} />
+                    </div>
+                    </Col>
+                    <Col style={{paddingTop:'8px'}}>
+                       <input type="text" placeholder="Note" style={{ width: '100%', padding: '5px' }} />
+                    </Col>
+                  </Row>
+                  )}
+             </div><hr/>
+{/* ---------- Doctor Filter ------------------------------ */}
+ 
+<Row>
+  <Col>
+    <Form.Group className="mb-2">
+      <Form.Label className='mb-0'>Doctor ID</Form.Label>
+      <CreatableSelect
+        isClearable
+        options={doctorOptions}
+        onInputChange={handleSearchChangedr}
+       />
+    </Form.Group>
+  </Col>
+  <Col>
+    <Form.Group className="mb-2">
+      <Form.Label className='mb-0'>Reference ID</Form.Label>
+      <CreatableSelect
+        isClearable
+        options={refIdOptions}
+        onInputChange={handleSearchChangerefdr}
+       />
+    </Form.Group>
+  </Col>
+</Row>
+<hr/>
+{/* ---------- Table------------------------------               */}
+                 <Button variant="primary" className="mb-2" onClick={handleAddRow}>
+                  Add Row
+              </Button>
+              
+              <Table striped bordered hover responsive style={{ minWidth: '65%' }}>
+          <thead>
+            <tr className='bg-dark text-light'>
+              <th style={{ fontFamily: 'math' }}>No</th>
+              <th style={{ fontFamily: 'math' , width: '40%' }}>Service ID-Name</th>
+              <th style={{ fontFamily: 'math' }}>Amount</th>
+              <th style={{ fontFamily: 'math' }}>Discount %</th>
+              <th style={{ fontFamily: 'math' }}>Discount</th>
+              <th style={{ fontFamily: 'math' }}>Remark</th>
+              <th style={{ fontFamily: 'math' }}>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            {inputValues.map((inputValue, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>
+                <CreatableSelect
+    isClearable
+    options={serviceOptions}
+    onInputChange={handleServiceSearchChange}
+    value={serviceOptions.find(option => option.value === inputValue.service_id)}
+    onChange={async selectedOption => {
+      const serviceId = selectedOption.value;
+      handleInputChanges(index, 'service_id', serviceId);
+      const rate = await fetchServiceRate(serviceId);
+      handleInputChanges(index, 'rate', rate);
+    }}/>
+                </td>
+                <td>
+                <input
+                    type="text"
+                    value={inputValue.rate || ''}
+                    readOnly />
+                </td>
+
+                <td>
+                  <input
+                    type="text"
+                    value={inputValue.DiscountPercent || ''}
+                    onChange={event => handleInputChanges(index, 'DiscountPercent', event.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={inputValue.Discount || ''}
+                    onChange={event => handleInputChanges(index, 'Discount', event.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={inputValue.Remark || ''}
+                    onChange={event => handleInputChanges(index, 'Remark', event.target.value)}
+                  />
+                </td>
+                <td className='text-center'>
+                            <IoIosRemoveCircleOutline size={30} style={{color:'red', cursor:'pointer'}}  onClick={() => handleRemoveRow(index)} />
+                          </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+
+              
+                {/* <Table striped bordered hover responsive>
+                  <thead>
+                    <tr className='bg-dark text-light'>
+                      <th style={{fontFamily: 'math'}}>No</th>
+                      <th style={{fontFamily: 'math'}}>Code</th>
+                      <th style={{fontFamily: 'math'}}>Amount</th>
+                      <th style={{fontFamily: 'math'}}>Discount %</th>
+                      <th style={{fontFamily: 'math'}}>Discount</th>
+                      <th style={{fontFamily: 'math'}}>Remark</th>
+                      <th style={{fontFamily: 'math'}}>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((rowData, index) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{rowData.Code}</td>
+                        <td>{rowData.Amount}</td>
+                        <td>{rowData.DiscountPercent}</td>
+                        <td>{rowData.Discount}</td>
+                        <td>{rowData.Remark}</td>
+                        <td>{rowData.Remove}</td>
+                      </tr>
+                    ))}
+                    {showInput && (
+                      inputValues.map((inputValue, index) => (
+                        <tr key={index}>
+                          <td>{rows.length + index + 1}</td>
+                          <td> {/* value={inputValue.Code} onChange={(event) => handleInputChanges(index, 'Code', event.target.value)}  */}
+                              {/* <Form.Control as="select"    > 
+                                  <option value=''>---Select---</option>
+                                  <option value='Test-2'>Test-2</option>
+                                  <option value='Test-3'>Test-4</option>
+                                  <option value='Test-4'>Test-5</option>
+                              </Form.Control>
+                          </td>
+                          <td>
+                            <Form.Control
+                              type="text"
+                              value={inputValue.Amount}
+                              onChange={(event) => handleInputChanges(index, 'Amount', event.target.value)} />
+                          </td>
+                          <td>
+                            <Form.Control
+                              type="text"
+                              value={inputValue.DiscountPercent}
+                              onChange={(event) => handleInputChanges(index, 'DiscountPercent', event.target.value)} />
+                          </td>
+                          <td>
+                            <Form.Control
+                              type="text"
+                              value={inputValue.Discount}
+                              onChange={(event) => handleInputChanges(index, 'Discount', event.target.value)}/>
+                          </td>
+                          <td>
+                            <Form.Control
+                              type="text"
+                              value={inputValue.Remark}
+                              onChange={(event) => handleInputChanges(index, 'Remark', event.target.value)}/>
+                          </td>
+                          <td className='text-center'>
+                            <IoIosRemoveCircleOutline size={30} style={{color:'red', cursor:'pointer'}}  onClick={() => handleRemoveRow(index)} />
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </Table> */}  
+                {showInput && (
+                  <Button variant="success" onClick={handleConfirmInput}>Confirm</Button>
+                )}
+               </Form>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default BillingForm
+
+
+
+
+
+
+// import React, { useState ,useEffect} from 'react'
+// import Navbar from '../Navbarall';
+// import {Row,Col,Form,Table,Button} from 'react-bootstrap';
+// import {RiBillLine} from 'react-icons/ri';
+// import {IoChevronBackCircleOutline} from 'react-icons/io5'
+// import DatePicker from 'react-datepicker';
+// import {IoIosRemoveCircleOutline} from 'react-icons/io';
+// import { RadioGroup, FormControlLabel, Radio,Checkbox  } from '@mui/material';
+// import {MdFileDownloadDone} from 'react-icons/md'
+// import {FaSearchengin} from 'react-icons/fa'
+// import {NavLink} from 'react-router-dom'
+// import Select from 'react-select';
+// import CreatableSelect from 'react-select/creatable';
+
+
+// const options = [
+//   { value: 'Kavitha S', label: 'Kavitha S' },
+//   { value: 'Harini', label: 'Harini' },
+//   { value: 'Joyhi Sree', label: 'Joyhi Sree' }
+// ]
+
+// const BillingForm = () => {
+
+//     const [billingDate, setBillingDate] = useState('')
+//     const [isChecked, setIsChecked] = useState(false);
+//     const [inputValue, setInputValue] = useState('');
+//     const [rows, setRows] = useState([]);
+//     const [inputValues, setInputValues] = useState([]);
+//     const [showInput, setShowInput] = useState(false);
+//     const [options, setOptions] = useState([]);
+//     const [selectBill, setSelectBranch] = useState(null);
+    
+
+//     useEffect(() => {
+//       // Fetch branch data and all bill numbers from the API
+//       fetch('https://euctostaging.com/prolife/api/bills/newBill', {
+//         method: 'POST'
+//       })
+//         .then(response => response.json())
+//         .then(data => {
+//           const branchOptions = [
+//             {
+//               value: data.billno,
+//               label: data.billno
+//             }
+//           ];
+//           setSelectBranch(branchOptions[0])
+//           return fetch('https://euctostaging.com/prolife/api/bills/all')
+//             .then(response => response.json())
+//             .then(allData => {
+//               console.log(allData);
+  
+//               const allBillOptions = allData.map(bill => ({
+//                 value: bill.bill_no,
+//                 label: bill.bill_no
+//               }));
+//               setOptions([...branchOptions, ...allBillOptions]);
+//             })
+//             .catch(error => console.error('Error fetching all bill numbers:', error));
+//         })
+//         .catch(error => console.error('Error fetching branch data:', error));
+//     }, []);
+//     const handleBranchChange = selectedOption => {
+//       setSelectBranch(selectedOption);
+//     };
+
+
+//     const handleAddRow = () => {
+//       setShowInput(true);
+//       setInputValues([...inputValues, {}]);
+//     };
+  
+//     const handleInputChanges = (index, field, value) => {
+//       const newInputValues = [...inputValues];
+//       newInputValues[index][field] = value;
+//       setInputValues(newInputValues);
+//     };
+  
+//     const handleRemoveRow = (index) => {
+//       const newInputValues = [...inputValues];
+//       newInputValues.splice(index, 1);
+//       setInputValues(newInputValues);
+//     };
+  
+//     const handleConfirmInput = () => {
+//       if (inputValues.length > 0) {
+//         setRows([...rows, ...inputValues]);
+//       }
+//       setInputValues([]);
+//       setShowInput(false);
+//     };
+  
+//     const handleCheckboxChange = () => {
+//       setIsChecked(!isChecked);
+//       if (!isChecked) {
+//         setInputValue('');
+//       }
+//     };
+
+//     const handleBillingDate = (date)=>{
+//         setBillingDate(date)
+//     }
+//   return (
+//     <div>
+//       <Navbar/>
+//       <div className='py-4 px-4'>
+//         <div style={{border:'1px solid #000', backgroundColor:'white', borderRadius:'10px'}} className='py-3 px-3' >
+//             <div className='row pt-3 px-3'>
+//             <Col><h4> <RiBillLine className='mr-1'/>Generate Billing</h4></Col>
+//             <Col style={{textAlign:'right'}}>
+//               <NavLink to='/Main/Billing/BillingTable'> <IoChevronBackCircleOutline size={36} style={{color:'red', cursor:'pointer'}}/></NavLink>
+//             </Col>
+//           </div><hr/>
+//  {/*------------ Billing Filter ----------- */}
+//  <Form>
+//               <Row>
+//                 <Col>
+//                 <Form.Group className="mb-2">
+//                         <Form.Label className='mb-0'>Bill Number</Form.Label>
+//                         <Select options={options} value={selectBill} onChange={handleBranchChange} />
+//                       </Form.Group>
+//                 </Col>
+//                 <Col className='pt-4'>
+//                  <Button variant="outline-success"><FaSearchengin className='mr-2'  />Search</Button>
+//                 </Col>
+//               </Row><hr/>
+// {/*---------------- Patient Filter -------------------- */}
+//               <Row>
+//                 <Col>
+//                 <Form.Group className="mb-2">
+//                         <Form.Label className='mb-0'>Patient ID</Form.Label>
+//                            {/* <Select options={options} /> */}
+//                            <CreatableSelect isClearable options={options} />
+//                       </Form.Group>
+//                 </Col>
+//                 <Col>
+//                   <Form.Group className="mb-2">
+//                   <Form.Label className='mb-0'>Patient Name</Form.Label>
+//                    <Form.Control type="text" />
+//                   </Form.Group>
+//                 </Col>
+//                 <Col className='pt-4'>
+//                 <Button variant="outline-success"><MdFileDownloadDone className='mr-2'  />Submit</Button>
+//                 </Col>
+//               </Row><hr/>
+//               <Row>
+//                 <Col>
+//                 <Form.Group className="mb-2">
+//                         <Form.Label className='mb-0'>Gender</Form.Label>
+//                         <Form.Control as="select" >
+//                           <option value='' >--Select--</option>
+//                           <option value="Male">Male</option>
+//                           <option value="Female">Female</option>
+//                         </Form.Control>
+//                       </Form.Group>
+//                 </Col>
+//                 <Col>
+//                   <Form.Group className="mb-2">
+//                   <Form.Label className='mb-0'>DOB</Form.Label>
+//                         <DatePicker
+//                         placeholderText="DD/MM/YYYY"
+//                         selected={billingDate}
+//                         onChange={handleBillingDate}
+//                         dateFormat="dd/MM/yyyy"
+//                         showYearDropdown
+//                         scrollableYearDropdown
+//                         showMonthDropdown
+//                         scrollableMonthYearDropdown
+//                         customInput={
+//                           <input type="text" id="txtDate" name="SelectedDate"   style={{ cursor: 'pointer', width:'100%', height:'35px' }}/>}/>
+//                   </Form.Group>
+//                 </Col>
+//               </Row>
+         
+//               <Form.Group>
+//                     <RadioGroup  row className='ml-2'>
+//                       <FormControlLabel value="OP" control={<Radio />} label="OP" />
+//                       <FormControlLabel value="IP" control={<Radio />} label="IP" />
+//                     </RadioGroup>
+//                   </Form.Group>
+//              <div>
+//                 <Form.Check
+//                     type="checkbox"
+//                     label="Advance Amount"
+//                     checked={isChecked}
+//                     onChange={handleCheckboxChange}/>    
+//                 {isChecked && (
+//                   <Row>
+//                     <Col>
+//                     <div style={{ marginTop: '10px' }}>
+//                       <input type="text"  placeholder="Enter Amount" style={{ width: '100%', padding: '5px' }} />
+//                     </div>
+//                     </Col>
+//                     <Col style={{paddingTop:'8px'}}>
+//                        <input type="text" placeholder="Note" style={{ width: '100%', padding: '5px' }} />
+//                     </Col>
+//                   </Row>
+//                   )}
+//              </div><hr/>
+// {/* ---------- Doctor Filter ------------------------------ */}
+ 
+//                 <Row>
+//                   <Col>
+//                      <Form.Group className="mb-2">
+//                         <Form.Label className='mb-0'>Doctor ID</Form.Label>
+//                         <Select options={options} />
+//                       </Form.Group>
+//                   </Col>
+//                   <Col>
+//                   <Form.Group className="mb-2">
+//                   <Form.Label className='mb-0'>Reference ID</Form.Label>
+//                     <Select options={options} />
+//                   </Form.Group>
+//                   </Col>
+//                 </Row><hr/>
+// {/* ---------- Table------------------------------               */}
+//           <div>
+//                 <Button variant="primary" className="mb-2" onClick={handleAddRow}>
+//                   Add Row
+//                 </Button>
+//                 <Table striped bordered hover responsive>
+//                   <thead>
+//                     <tr className='bg-dark text-light'>
+//                       <th style={{fontFamily: 'math'}}>No</th>
+//                       <th style={{fontFamily: 'math'}}>Code</th>
+//                       <th style={{fontFamily: 'math'}}>Amount</th>
+//                       <th style={{fontFamily: 'math'}}>Discount %</th>
+//                       <th style={{fontFamily: 'math'}}>Discount</th>
+//                       <th style={{fontFamily: 'math'}}>Remark</th>
+//                       <th style={{fontFamily: 'math'}}>Remove</th>
+//                     </tr>
+//                   </thead>
+//                   <tbody>
+//                     {rows.map((rowData, index) => (
+//                       <tr key={index}>
+//                         <td>{index + 1}</td>
+//                         <td>{rowData.Code}</td>
+//                         <td>{rowData.Amount}</td>
+//                         <td>{rowData.DiscountPercent}</td>
+//                         <td>{rowData.Discount}</td>
+//                         <td>{rowData.Remark}</td>
+//                         <td>{rowData.Remove}</td>
+//                       </tr>
+//                     ))}
+//                     {showInput && (
+//                       inputValues.map((inputValue, index) => (
+//                         <tr key={index}>
+//                           <td>{rows.length + index + 1}</td>
+//                           <td> {/* value={inputValue.Code} onChange={(event) => handleInputChanges(index, 'Code', event.target.value)}  */}
+//                               <Form.Control as="select"    > 
+//                                   <option value=''>---Select---</option>
+//                                   <option value='Test-2'>Test-2</option>
+//                                   <option value='Test-3'>Test-4</option>
+//                                   <option value='Test-4'>Test-5</option>
+//                               </Form.Control>
+//                           </td>
+//                           <td>
+//                             <Form.Control
+//                               type="text"
+//                               value={inputValue.Amount}
+//                               onChange={(event) => handleInputChanges(index, 'Amount', event.target.value)} />
+//                           </td>
+//                           <td>
+//                             <Form.Control
+//                               type="text"
+//                               value={inputValue.DiscountPercent}
+//                               onChange={(event) => handleInputChanges(index, 'DiscountPercent', event.target.value)} />
+//                           </td>
+//                           <td>
+//                             <Form.Control
+//                               type="text"
+//                               value={inputValue.Discount}
+//                               onChange={(event) => handleInputChanges(index, 'Discount', event.target.value)}/>
+//                           </td>
+//                           <td>
+//                             <Form.Control
+//                               type="text"
+//                               value={inputValue.Remark}
+//                               onChange={(event) => handleInputChanges(index, 'Remark', event.target.value)}/>
+//                           </td>
+//                           <td className='text-center'>
+//                             <IoIosRemoveCircleOutline size={30} style={{color:'red', cursor:'pointer'}}  onClick={() => handleRemoveRow(index)} />
+//                           </td>
+//                         </tr>
+//                       ))
+//                     )}
+//                   </tbody>
+//                 </Table>
+//                 {showInput && (
+//                   <Button variant="success" onClick={handleConfirmInput}>Confirm</Button>
+//                 )}
+//               </div>
+//               </Form>
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default BillingForm

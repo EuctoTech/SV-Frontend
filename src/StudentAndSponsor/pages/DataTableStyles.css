@@ -1,0 +1,22 @@
+/* DataTableStyles.css */
+
+/* Style the entire DataTable */
+.data-table {
+  font-size: 14px;
+}
+
+/* Style the header cells */
+.data-table .rdt_TableHead {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+/* Style the rows */
+.data-table .rdt_TableRow {
+  font-size: 14px;
+}
+
+/* Add text wrapping to cell content */
+.data-table .rdt_TableCell {
+  white-space: normal;
+}

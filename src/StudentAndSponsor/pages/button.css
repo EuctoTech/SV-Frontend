@@ -1,0 +1,101 @@
+.custom-button {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  background-color: #28a745;
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  z-index: 1;
+}
+
+.custom-button:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: -1;
+}
+
+.custom-button:hover {
+  transform: scale(1.05);
+}
+
+.custom-button:hover:before {
+  opacity: 1;
+}
+
+.custom-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.4);
+}
+
+.button-text {
+  margin-right: 8px;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.button-icon {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.custom-button:hover .button-icon,
+.custom-button:focus .button-icon {
+  opacity: 1;
+}
+
+.custom-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-button.success {
+  background-color: #5cb85c;
+}
+
+.custom-button.success .button-icon {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.custom-button.success .icon-path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: tick 0.5s forwards;
+}
+
+.icon-path {
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes tick {
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}

@@ -1,0 +1,56 @@
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .invoice-section {
+    page-break-after: always; /* Ensures each section starts on a new page */
+  }
+
+  .no-page-break {
+    page-break-inside: avoid; /* Avoid breaking inside tables or large divs */
+  }
+
+  .footer {
+    page-break-before: always; /* Ensures the footer goes to the next page */
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse; /* Ensures borders are collapsed together */
+    border: 1px solid #000; /* Adds border to the table */
+  }
+
+  th, td {
+    padding: 4px; /* Adjust padding for print */
+    font-size: 10pt; /* Reduce font size for print */
+    border: 1px solid #ddd; /* Border for table cells */
+  }
+
+  /* Ensure the striped rows appear in print */
+  .striped tbody tr:nth-child(odd) {
+    background-color: #f2f2f2 !important; /* Force background color for odd rows */
+  }
+
+  .striped tbody tr:nth-child(even) {
+    background-color: white !important; /* Ensure even rows have no background */
+  }
+
+  /* Optional: Add more print styling if needed */
+  .no-print {
+    display: none !important; /* Hide elements you don't want to print */
+  }
+}
+
+
+/* Adjust styles for mobile devices */
+@media (max-width: 768px) {
+  .a4-paper {
+    margin: 0;
+    padding: 2px;  /* Minimize padding */
+    font-size: 4px;  /* Extremely small font size */
+    transform: scale(0.05);  /* Scale down to 5% of the original size */
+    transform-origin: top left;  /* Keeps the scaling from the top-left corner */
+  }
+}

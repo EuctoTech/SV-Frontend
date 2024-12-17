@@ -1,0 +1,173 @@
+*{
+    margin: 0;
+    bottom: 0;
+    box-sizing: border-box;
+}
+
+.logoSVS{
+    width: 7%;
+}
+
+.navbar{
+    display: flex;
+    padding: 0px 0px;
+    width: 100%;
+    align-items: center;
+    background-color: #000;
+}
+
+body{
+    background-color: #f0f0f0;
+}
+
+a{
+    text-decoration: none;
+    font-size: 20px;
+    color: #000;
+}
+
+.navbar ul{
+    flex: 1;
+    text-align: right;
+}
+
+.navbar ul li{
+    display: inline-block;
+    margin: 0 30px;
+}
+
+
+.mobile-list{
+    display: none;
+}
+
+
+@media only screen and (max-width:800px){
+    .navbar ul.desktop-list{
+        display: none;
+    }
+    .boxlogo{
+        justify-content: space-around;
+        align-items: center;  
+    }
+    .mobile-list{
+        background-color: #394B58;
+        display: block;
+        color: #ffff;
+        position: fixed;
+        bottom: -16px;
+        /* bottom: 0; */
+        left: 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        padding: 10px;
+        cursor: pointer;
+    }
+    .mobile-list i{
+        font-size: 7vmin;
+        cursor: pointer;
+    }
+    .recticons:hover{
+        color: #FFA500;
+    }
+    .recticons{
+        color: whitesmoke;
+    }
+    .logoSVS{
+        width: 20%;
+    }
+
+    .boxhead{
+         font-size: 1vmin;
+        align-items: center;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+}
+
+.menuText{
+    --s: 0.1em;   /* the thickness of the line */
+    --c: #F5B745; /* the color */
+    
+    color: #0000;
+    padding-bottom: var(--s);
+    background: 
+      linear-gradient(90deg,var(--c) 50%,#000 0) calc(100% - var(--_p,0%))/200% 100%,
+      linear-gradient(var(--c) 0 0) 0% 100%/var(--_p,0%) var(--s) no-repeat;
+    -webkit-background-clip: text,padding-box;
+            background-clip: text,padding-box;
+    transition: 0.5s;
+  }
+.menuText:hover {--_p: 100%}
+
+.menuText{
+    font-family: inherit;
+    font-size: 2rem;
+}
+
+.SchoolNameNav {
+    color: #fff;
+    font-family: auto;
+    font-size: 1.6vw; /* Adjust font size relative to viewport width */
+    text-align: center; /* Ensure text is centered */
+    padding: 0 1em; /* Add padding to make it fit well */
+}
+
+@media (max-width: 768px) {
+    .SchoolNameNav {
+        font-size:2.8vw; /* Slightly larger font size for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .SchoolNameNav {
+        font-size: 2.8vw; /* Even larger for very small screens */
+    }
+}
+@media (max-width: 377px) {
+    .SchoolNameNav {
+        font-size: 2.7vw; /* Even larger for very small screens */
+    }
+}
+
+/* //////////////////////////////////////// */
+.desktop-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.menuText {
+    font-size: 16px;  /* Default size for desktop */
+}
+
+.desktop-list a {
+    text-decoration: none;
+}
+
+/* Media Query for screens smaller than 768px (mobile/tablet) */
+@media (max-width: 768px) {
+    .menuText {
+        font-size: 14px;  /* Smaller text on mobile */
+    }
+
+    .desktop-list a {
+        font-size: 14px;  /* Adjust text size inside links */
+    }
+
+    .desktop-list li {
+        padding: 5px 0;  /* Adjust padding for smaller screen */
+    }
+
+    .menuText a {
+        padding: 5px 0;  /* Adjust padding on links */
+    }
+
+    /* Optionally adjust images or icons */
+    .desktop-list svg {
+        width: 20px;
+        height: 20px;  /* Shrink icons like TbLogout */
+    }
+}

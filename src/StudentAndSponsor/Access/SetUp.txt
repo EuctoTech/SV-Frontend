@@ -1,0 +1,2 @@
+          <h4 style={{fontFamily: 'paynimo-icons'}}></h4>
+          <p style={{fontFamily: 'sans-serif'}} className='px-4'></p>
