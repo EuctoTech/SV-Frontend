@@ -62,152 +62,163 @@ import Myprofile from "./StudentAndSponsor/pages/Myprofile";
 import Stu_Spo_Report from "./StudentAndSponsor/pages/Stu_Spo_Report";
 import Allreceipts from "./StudentAndSponsor/pages/Allreceipts";
 import EditStudentProfile from "./Admindashboard/MangerUser/EditStudentProfile";
+import StudentEditTabs from "./Admindashboard/MangerUser/Tabs/StudentEditTabs";
+import StaffDataBase from "./Admindashboard/Masters/StaffDataBase/StaffDataBase";
+import CreateAndEditStaff from "./Admindashboard/Masters/StaffDataBase/CreateAndEditStaff";
+import ViewStaffDetails from "./Admindashboard/Masters/StaffDataBase/ViewStaffDetails";
+import HealthCareDatBase from "./Admindashboard/Masters/HealthCareDataBase/HealthCareDataBase";
+import CreateAndEditHealthCareDataBase from "./Admindashboard/Masters/HealthCareDataBase/CreateAndEditHealthCareDataBase";
+import ViewHealthCareDataBase from "./Admindashboard/Masters/HealthCareDataBase/ViewHealthCareDataBase";
 
 export default function RoutesScreen() {
   const user_type = sessionStorage.getItem("user_type");
   return (
     <div>
       {/* {user_type === "admin" ? ( */}
-        <Router basename="/svsportaladmintest">
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/LoginAdmin" element={<Login />} />
-            <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/reminders" element={<Reminders />} />
-            <Route path="/MangerUser/User" element={<User />} />
-            <Route path="/MangerUser/StudentUser" element={<StudentUser />} />
-            <Route path="/StudentProfile/Profile" element={<Profile />} />
-            <Route path="/MangerUser/Bulkupload" element={<Bulkupload />} />
-            <Route path="/Masters/Mfees" element={<Mfees />} />
-            <Route path="/Setting" element={<Setting />} />
-            <Route path="/MangerUser/EditUser" element={<EditUser />} />
-            <Route path="/MangerUser/Viewprofile" element={<Viewprofile />} />
-            <Route
-              path="/MappingStystem/AddSponsoruser"
-              element={<AddSponsoruser />}
-            />
-            <Route
-              path="/MappingStystem/Sponsormaping"
-              element={<Sponsormaping />}
-            />
-            <Route
-              path="/MappingStystem/ViewMapping"
-              element={<ViewMapping />}
-            />
-            <Route path="/MappingStystem/Feesmaping" element={<Feesmaping />} />
-            <Route path="/MangerUser/Role" element={<Role />} />
-            <Route path="/Masters/Msponsor" element={<Msponsor />} />
-            <Route
-              path="/Masters/AddSponsorlist"
-              element={<AddSponsorlist />}
-            />
-            <Route
-              path="/Masters/Viewstudentdata"
-              element={<Viewstudentdata />}
-            />
-            <Route path="/Masters/AddStudent" element={<AddStudent />} />
-            <Route
-              path="/Masters/AddStudentlist"
-              element={<AddStudentlist />}
-            />
-            <Route path="/Masters/GroupMaster" element={<GroupMaster />} />
-            <Route path="/Masters/ClassMaster" element={<ClassMaster />} />
-            <Route path="/Masters/SectionMaster" element={<SectionMaster />} />
-            <Route
-              path="/Masters/DiscountMaster"
-              element={<DiscountMaster />}
-            />
-            <Route
-              path="/Masters/ModeofpaymentMaster"
-              element={<ModeofpaymentMaster />}
-            />
-            <Route
-              path="/Admindashboard/SponsorPayment/SponsorBulkpayment"
-              element={<SponsorBulkpayment />}
-            />
-            <Route path="/Test" element={<Test />} />
-            <Route
-              path="/GeneralInvoice/StudentInvoice/:invoiceNo"
-              element={<StudentInvoice />}
-            />
-            <Route
-              path="/GeneralInvoice/Discountfees"
-              element={<Discountfees />}
-            />
-            <Route
-              path="/GeneralInvoice/CreateInvoiceList"
-              element={<CreateInvoiceList />}
-            />
-            <Route
-              path="/GeneralInvoice/Createinvoice"
-              element={<Createinvoice />}
-            />
-            <Route
-              path="/GeneralInvoice/InvoiceTable"
-              element={<InvoiceTable />}
-            />
-            <Route path="/GeneralInvoice/Payfee" element={<Payfee />} />
-            <Route
-              path="/GeneralInvoice/SponsorReport"
-              element={<SponsorReport />}
-            />
-            <Route path="/Masters/UploadPic" element={<UploadPic />} />
-            <Route
-              path="/ExcessAmount/ExcessAmountTable"
-              element={<ExcessAmountTable />}
-            />
-            {/*Reports*/}
+      <Router basename="/svsportaladmintest">
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/LoginAdmin" element={<Login />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/reminders" element={<Reminders />} />
+          <Route path="/MangerUser/User" element={<User />} />
+          <Route path="/MangerUser/StudentUser" element={<StudentUser />} />
+          <Route path="/StudentProfile/Profile" element={<Profile />} />
+          <Route path="/MangerUser/Bulkupload" element={<Bulkupload />} />
+          <Route path="/Masters/Mfees" element={<Mfees />} />
+          <Route path="/Setting" element={<Setting />} />
+          <Route path="/MangerUser/EditUser" element={<EditUser />} />
+          <Route path="/MangerUser/Viewprofile" element={<Viewprofile />} />
+          <Route
+            path="/MappingStystem/AddSponsoruser"
+            element={<AddSponsoruser />}
+          />
+          <Route
+            path="/MappingStystem/Sponsormaping"
+            element={<Sponsormaping />}
+          />
+          <Route path="/MappingStystem/ViewMapping" element={<ViewMapping />} />
+          <Route path="/MappingStystem/Feesmaping" element={<Feesmaping />} />
+          <Route path="/MangerUser/Role" element={<Role />} />
+          <Route path="/Masters/Msponsor" element={<Msponsor />} />
+          <Route path="/Masters/AddSponsorlist" element={<AddSponsorlist />} />
+          <Route
+            path="/Masters/Viewstudentdata"
+            element={<Viewstudentdata />}
+          />
+          <Route path="/Masters/AddStudent" element={<AddStudent />} />
+          <Route path="/Masters/AddStudentlist" element={<AddStudentlist />} />
+          <Route path="/Masters/GroupMaster" element={<GroupMaster />} />
+          <Route path="/Masters/ClassMaster" element={<ClassMaster />} />
+          <Route path="/Masters/SectionMaster" element={<SectionMaster />} />
+          <Route path="/Masters/DiscountMaster" element={<DiscountMaster />} />
+          <Route
+            path="/Masters/ModeofpaymentMaster"
+            element={<ModeofpaymentMaster />}
+          />
+          <Route
+            path="/Admindashboard/SponsorPayment/SponsorBulkpayment"
+            element={<SponsorBulkpayment />}
+          />
+          <Route path="/Test" element={<Test />} />
+          <Route
+            path="/GeneralInvoice/StudentInvoice/:invoiceNo"
+            element={<StudentInvoice />}
+          />
+          <Route
+            path="/GeneralInvoice/Discountfees"
+            element={<Discountfees />}
+          />
+          <Route
+            path="/GeneralInvoice/CreateInvoiceList"
+            element={<CreateInvoiceList />}
+          />
+          <Route
+            path="/GeneralInvoice/Createinvoice"
+            element={<Createinvoice />}
+          />
+          <Route
+            path="/GeneralInvoice/InvoiceTable"
+            element={<InvoiceTable />}
+          />
+          <Route path="/GeneralInvoice/Payfee" element={<Payfee />} />
+          <Route
+            path="/GeneralInvoice/SponsorReport"
+            element={<SponsorReport />}
+          />
+          <Route path="/Masters/UploadPic" element={<UploadPic />} />
+          <Route
+            path="/ExcessAmount/ExcessAmountTable"
+            element={<ExcessAmountTable />}
+          />
+          {/*Reports*/}
 
-            <Route
-              path="/Admindashboard/Reports/StudentLedger"
-              element={<StudentLedger />}
-            />
-            <Route
-              path="/Admindashboard/Reports/MasterReport"
-              element={<MasterReport />}
-            />
-            <Route
-              path="/Admindashboard/Reports/OrganizationLedger"
-              element={<OrganizationLedger />}
-            />
-            <Route
-              path="/Admindashboard/Reports/LedgerSummary"
-              element={<LedgerSummary />}
-            />
-            {/* Hotel Fee Map */}
-            <Route
-              path="/Admindashboard/Hostel/HostelFeeMap"
-              element={<HostelFeeMap />}
-            />
-            <Route
-              path="/Admindashboard/Hostel/HotelChangePass"
-              element={<HotelChangePass />}
-            />
-            <Route
-              path="/Admindashboard/NoDueForm/NodueTable"
-              element={<NodueTable />}
-            />
-            <Route
-              path="/Admindashboard/NoDueForm/NodueForm/:id"
-              element={<NodueForm />}
-            />
-            <Route path="*" element={<ErrorPage />} />
-            <Route
-              path="/PaymentReceipt/:paymentTransactionId"
-              element={<PaymentReceipt />}
-            />
-            <Route
-              path="/PaymentReceipt12345678912345678/:paymentTransactionId"
-              element={<PaymentReceipttwo />}
-            />
-             <Route
-              path="/edit/student/profile"
-              element={<EditStudentProfile />}
-            />
-          </Routes>
-          <LogoutComponent /> {/* Add the LogoutComponent here */}
-        </Router>
-     
+          <Route
+            path="/Admindashboard/Reports/StudentLedger"
+            element={<StudentLedger />}
+          />
+          <Route
+            path="/Admindashboard/Reports/MasterReport"
+            element={<MasterReport />}
+          />
+          <Route
+            path="/Admindashboard/Reports/OrganizationLedger"
+            element={<OrganizationLedger />}
+          />
+          <Route
+            path="/Admindashboard/Reports/LedgerSummary"
+            element={<LedgerSummary />}
+          />
+          {/* Hotel Fee Map */}
+          <Route
+            path="/Admindashboard/Hostel/HostelFeeMap"
+            element={<HostelFeeMap />}
+          />
+          <Route
+            path="/Admindashboard/Hostel/HotelChangePass"
+            element={<HotelChangePass />}
+          />
+          <Route
+            path="/Admindashboard/NoDueForm/NodueTable"
+            element={<NodueTable />}
+          />
+          <Route
+            path="/Admindashboard/NoDueForm/NodueForm/:id"
+            element={<NodueForm />}
+          />
+          <Route path="*" element={<ErrorPage />} />
+          <Route
+            path="/PaymentReceipt/:paymentTransactionId"
+            element={<PaymentReceipt />}
+          />
+          <Route
+            path="/PaymentReceipt12345678912345678/:paymentTransactionId"
+            element={<PaymentReceipttwo />}
+          />
+          <Route
+            path="/edit/student/profile"
+            element={<EditStudentProfile />}
+          />
+          <Route path="/student/edit/tabs" element={<StudentEditTabs />} />
+          <Route path="/staff/database" element={<StaffDataBase />} />
+          <Route
+            path="/create/and/edit/staff"
+            element={<CreateAndEditStaff />}
+          />
+          <Route path="/view/staff/details" element={<ViewStaffDetails />} />
+
+          <Route path="/healthCare/database" element={<HealthCareDatBase />} />
+          <Route
+            path="/create/and/edit/healthCare"
+            element={<CreateAndEditHealthCareDataBase />}
+          />
+          <Route
+            path="/view/healthCare/details"
+            element={<ViewHealthCareDataBase />}
+          />
+        </Routes>
+        <LogoutComponent /> {/* Add the LogoutComponent here */}
+      </Router>
     </div>
   );
 }

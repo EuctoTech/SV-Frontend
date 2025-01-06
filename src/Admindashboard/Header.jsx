@@ -15,12 +15,12 @@ import Notification from './Notification';
 const Header = () => {
   return (
     <div className='headerNav'>
-      <Navbar style={{
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    backdropFilter: 'blur(10px)',
+      <Navbar  style={{
+    backgroundColor: '#fff',
+    // backdropFilter: 'blur(10px)',
     boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-    color: '#9E231B',
-    textShadow: '0px 0px 4px rgba(158,35,27, 0.4)',  
+    // color: '#9E231B',
+    // textShadow: '0px 0px 4px rgba(158,35,27, 0.4)',  
     }}>
         <Container style={{ width: '100%', float: "left", display: 'flex' }}>
           {/*   <div class="box">

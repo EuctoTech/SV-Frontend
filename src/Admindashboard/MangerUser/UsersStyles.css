@@ -1,0 +1,148 @@
+.main-content {
+  width: 100%; /* Ensures it spans the full width of the screen */
+}
+.edit-container {
+  background-color: white;
+  margin: auto;
+  border-radius: 6px;
+  padding: 12px;
+}
+.title-col-txt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0px;
+}
+.title-txt {
+  margin-bottom: 0px;
+  font-family: serif;
+  color: #962423;
+}
+.form-ctrl-style {
+  background-color: #f9f9f9;
+  border-radius: 2px;
+  font-family: "serif";
+}
+.form-ctrl-style::placeholder {
+  font-family: "serif"; /* Replace with your desired font */
+}
+.label-col-style {
+  display: flex;
+  align-items: center;
+}
+.row-style {
+  align-items: baseline;
+}
+.dropdown-font-style {
+  font-family: "serif"; /* Apply serif font family */
+}
+
+/* Ensure placeholder inherits the same font */
+.dropdown-font-style option[value=""] {
+  font-family: "serif"; /* Font for the placeholder */
+  color: #aaa; /* Placeholder color */
+}
+
+.custom-dotted-hr {
+  border: none; /* Remove the default border */
+  border-top: 2px dotted #000; /* Dotted line */
+  margin: 10px 0; /* Adjust spacing around the line */
+  width: 100%; /* Set width as needed */
+  padding-bottom: 20px;
+}
+table {
+  font-family: Arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+tr {
+  border-bottom: 1px solid #ccc;
+}
+th,
+td {
+  text-align: left;
+  padding: 8px;
+  white-space: nowrap;
+}
+/* tr:nth-child(even) {
+  background-color: #f2f2f2;
+} */
+.cell-header {
+  display: none;
+}
+@media screen and (max-width: 600px) {
+  th {
+    display: none;
+  }
+  .cell-header {
+    display: block;
+    font-weight: bold;
+  }
+  td {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+.student-edit-table {
+  background-color: #727272;
+}
+.border-edit-style {
+  border-bottom: none;
+}
+.content-back-style {
+  background-color: #f2f2f2;
+}
+.common-font-family {
+  font-family: serif;
+}
+.student-title {
+  background-color: #2f6da5;
+  color: white;
+  border-radius: 2px;
+}
+.spin-style {
+  display: grid;
+  place-content: center;
+}
+.link-style {
+  width: 90%;
+  font-family: serif;
+}
+.new-tab-style {
+  text-align: start;
+}
+.new-tab-style:hover {
+  color: #0d6efd;
+  cursor: pointer;
+}
+.status-dropdown {
+  border: none;
+  background-color: #198754;
+  padding: 0px 10px;
+  border-radius: 4px;
+  color: #fff;
+}
+.status-dropdown:focus {
+  border: none;
+}
+.swal2-buttons-spacing {
+  gap: 20px;  /* Space between buttons */
+  justify-content: center;  /* Center-align buttons */
+}
+.text-black {
+  color: black;
+}
+
+.text-light-gray {
+  color: lightgray;
+}
+.staff-label {
+  font-size: 16px;
+  font-weight: 600; /* Semi-bold */
+}
+
+.staff-value {
+  font-size: 16px;
+  font-weight: 400; /* Regular */
+}
