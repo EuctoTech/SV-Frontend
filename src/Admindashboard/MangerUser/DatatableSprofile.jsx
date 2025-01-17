@@ -258,11 +258,6 @@ const DatatableSprofile = () => {
 
   const navigate = useNavigate();
 
-  const printRecp = (invoiceNo) => {
-    // Correct way: Pass invoiceNo in 'state'
-    navigate("/MangerUser/Viewprofile", { state: { invoiceNo } });
-  };
-
   const dropdownOptions = [
     { name: "Select Status", value: "" },
     { name: "Applied", value: "Applied" },
@@ -451,7 +446,9 @@ const DatatableSprofile = () => {
                 <IconButton
                   color="success"
                   onClick={() => {
-                    printRecp(row?.original?.admission_no);
+                    navigate("/MangerUser/Viewprofile", {
+                      state: { id: row?.original?.profile_id },
+                    });
                   }}
                 >
                   <RemoveRedEyeOutlinedIcon />

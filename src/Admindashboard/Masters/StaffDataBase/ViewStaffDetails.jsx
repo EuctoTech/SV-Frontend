@@ -12,7 +12,6 @@ import NoImg from "../../MangerUser/avatarStudent.svg";
 
 export default function ViewStaffDetails() {
   const [data, setData] = useState([]);
-  console.log("data", data);
   const [isLoading, setLoading] = useState(true);
   const location = useLocation();
 
@@ -21,7 +20,7 @@ export default function ViewStaffDetails() {
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
-    documentTitle: "Leave Data",
+    documentTitle: "Staff Details",
     // onAfterPrint:()=> Swal.fire({
     //   position: 'center',
     //   icon: 'success',

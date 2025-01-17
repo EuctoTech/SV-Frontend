@@ -6,16 +6,14 @@ import { ErrorMessage, Formik } from "formik";
 import { useLocation, useNavigate } from "react-router-dom";
 import { handleHealthCareValidation } from "../../../Validators/YupValidators";
 import axios from "axios";
-import ImageModal from "../../MangerUser/ModalPopup/ImageModal";
 import { Spin } from "antd";
 import Swal from "sweetalert2";
 
 export default function CreateAndEditHealthCareDataBase() {
   const [data, setData] = useState([]);
-  console.log('datafffffffff', data)
   const [isLoading, setLoading] = useState(false);
   const [selectedData, setSelectedData] = useState([]);
-  const [isStudentId, setStudentId] = useState();
+  const [selectedItem, setSelectedItem] = useState(null);
   const location = useLocation();
   const { type, id } = location.state || {}; // Access passed state safely
 
@@ -53,8 +51,8 @@ export default function CreateAndEditHealthCareDataBase() {
     Swal.fire({
       title:
         type === "add"
-          ? "Health Created Successfully!"
-          : "Health Updated Successfully!",
+          ? "Health Care Created Successfully!"
+          : "Health Care Updated Successfully!",
       icon: "success",
       timer: 2000, // Auto-close after 2 seconds
       showConfirmButton: false,
@@ -63,9 +61,13 @@ export default function CreateAndEditHealthCareDataBase() {
     });
   };
 
+  const handleSelectChange = (e) => {
+    const selectedValue = e.target.value;
+    const selected = selectedData.find((item) => item.value === selectedValue);
+    setSelectedItem(selected ? selected.items : null); // Store the selected item
+  };
+
   const updateHealth = (values) => {
-    console.log("values", values);
-    console.log('isStudentId', isStudentId)
     setLoading(true);
 
     axios
@@ -74,8 +76,15 @@ export default function CreateAndEditHealthCareDataBase() {
           ? "https://www.santhoshavidhyalaya.com/SVSTEST/api/healthcare/add"
           : `https://www.santhoshavidhyalaya.com/SVSTEST/api/healthcare/edit/${id}`,
         {
-          studentId: isStudentId,
+          studentId: selectedItem?.id ?? data?.student_id,
           class: values.class,
+          treatmentType: values.treatment_type,
+          natureOfSkiness: values.nature_of_sickness,
+          contact_no: values.contact_no,
+          father_name: values.father_name,
+          mother_name: values.mother_name,
+          toDate: values.to_date,
+          fromDate: values.from_date,
         }
       )
       .then((res) => {
@@ -94,12 +103,11 @@ export default function CreateAndEditHealthCareDataBase() {
         `https://www.santhoshavidhyalaya.com/SVSTEST/api/get-admissionddstudents/${value}`
       )
       .then((res) => {
-        console.log("res0000000000000000", res?.data?.standards);
         const data = res?.data?.standards || [];
         const options = data.map((item) => ({
           value: item.STUDENT_NAME, // or any unique value
-          label: `${item.roll_no} - ${item.STUDENT_NAME}`, // Combine rollNo and studentName
-          id: item.id,
+          label: item.STUDENT_NAME, // Combine rollNo and studentName
+          items: item,
         }));
         setSelectedData(options);
       });
@@ -114,7 +122,7 @@ export default function CreateAndEditHealthCareDataBase() {
       .then((res) => {
         const data = res?.data?.healthcare_record;
         setData(data);
-        getStandardDetails(data?.class)
+        getStandardDetails(data?.class);
         setLoading(false);
       });
   };
@@ -145,17 +153,22 @@ export default function CreateAndEditHealthCareDataBase() {
                 enableReinitialize={true}
                 initialValues={{
                   class: data?.class ?? "",
-                  student_name: "",
+                  student_name:
+                    selectedItem?.STUDENT_NAME ?? data?.studentName ?? "",
                   admission_no:
-                    data?.admission_no ?? selectedData?.admission_no ?? "",
+                    selectedItem?.admission_no ?? data?.admissionNo ?? "",
                   contact_no:
-                    data?.MOBILE_NUMBER ?? selectedData?.contactNo ?? "",
-                  father_name: data?.FATHER ?? selectedData?.fatherName ?? "",
-                  mother_name: data?.MOTHER ?? selectedData?.motherName ?? "",
-                  from_date: selectedData?.from_date ?? "",
-                  to_date: selectedData?.to_date ?? "",
-                  treatment_type: selectedData?.treatment_type ?? "",
-                  nature_of_sickness: selectedData?.nature_of_sickness ?? "",
+                    selectedItem?.MOBILE_NUMBER ?? data?.contactNo ?? "",
+                  father_name: selectedItem?.FATHER ?? data?.fatherName ?? "",
+                  mother_name: selectedItem?.MOTHER ?? data?.motherName ?? "",
+                  from_date: data?.from_date ?? "",
+                  to_date: data?.to_date ?? "",
+                  treatment_type:
+                    selectedItem?.treatment_type ?? data?.treatment_type ?? "",
+                  nature_of_sickness:
+                    selectedItem?.nature_of_sickness ??
+                    data?.nature_of_sickness ??
+                    "",
                 }}
                 onSubmit={(values) => {
                   updateHealth(values);
@@ -200,13 +213,29 @@ export default function CreateAndEditHealthCareDataBase() {
                                 onBlur={handleBlur}
                                 onChange={(e) => {
                                   const selectedValue = e.target.value;
-                                  const selectedOption = data?.find(
-                                    (option) => option.value === selectedValue
-                                  );
-                                  console.log('selectedOption', selectedOption)
+
                                   handleChange(e);
-                                  getStandardDetails(e.target.value);
-                                  setStudentId(selectedOption?.id); // Store the id if needed
+                                  if (selectedValue) {
+                                    getStandardDetails(selectedValue);
+                                    setData((prevData) => ({
+                                      ...prevData,
+                                      student_name: "",
+                                      admission_no: "",
+                                      contact_no: "",
+                                      father_name: "",
+                                      mother_name: "",
+                                      from_date: "",
+                                      to_date: "",
+                                      treatment_type: "",
+                                      nature_of_sickness: "",
+                                    }));
+                                    setSelectedItem([]);
+                                  } else {
+                                    setSelectedData([]);
+                                    // Reset all fields except class
+                                    setData([]);
+                                    setSelectedItem([]);
+                                  }
                                 }} // Custom onChange to handle id
                               >
                                 {standardOptions.map((option) => (
@@ -225,21 +254,29 @@ export default function CreateAndEditHealthCareDataBase() {
                           <Col xs={12} md={2} className="label-col-style">
                             <Form.Label className="common-font-family mb-0">
                               Student Name
-                              <span className="text-danger"> *</span>
+                              {values.class && <span className="text-danger"> *</span>}
                             </Form.Label>
                           </Col>
 
                           <Col xs={12} md={4} className="mb-4">
                             <Form.Group>
                               <Form.Select
+                                disabled={!values.class}
                                 name="student_name"
                                 className="form-ctrl-style dropdown-font-style"
                                 value={values.student_name}
                                 onBlur={handleBlur}
-                                onChange={handleChange}
+                                onChange={(e) => {
+                                  handleChange(e);
+                                  handleSelectChange(e); // Call to capture selected item
+                                  setData((prevData) => ({
+                                    ...prevData,
+                                    class: values.class,
+                                  }));
+                                }}
                               >
                                 <option value="">Select Student</option>
-                                {selectedData.map((option) => (
+                                {selectedData?.map((option) => (
                                   <option
                                     key={option.value}
                                     value={option.value}
@@ -263,6 +300,7 @@ export default function CreateAndEditHealthCareDataBase() {
                           <Col xs={12} md={4} className="mb-4">
                             <Form.Group>
                               <Form.Control
+                                disabled={true}
                                 name="admission_no"
                                 className="form-ctrl-style"
                                 placeholder="Admission No"
@@ -283,6 +321,7 @@ export default function CreateAndEditHealthCareDataBase() {
                           <Col xs={12} md={4} className="mb-4">
                             <Form.Group>
                               <Form.Control
+                                disabled={true}
                                 name="contact_no"
                                 className="form-ctrl-style"
                                 placeholder="Contact No"
@@ -305,6 +344,7 @@ export default function CreateAndEditHealthCareDataBase() {
                           <Col xs={12} md={4} className="mb-4">
                             <Form.Group>
                               <Form.Control
+                                disabled={true}
                                 name="father_name"
                                 className="form-ctrl-style"
                                 placeholder="Father Name"
@@ -325,6 +365,7 @@ export default function CreateAndEditHealthCareDataBase() {
                           <Col xs={12} md={4} className="mb-4">
                             <Form.Group>
                               <Form.Control
+                                disabled={true}
                                 name="mother_name"
                                 className="form-ctrl-style"
                                 placeholder="Mother Name"
@@ -340,13 +381,14 @@ export default function CreateAndEditHealthCareDataBase() {
                         <Row className="row-style px-2">
                           <Col xs={12} md={2} className="label-col-style">
                             <Form.Label className="common-font-family mb-0">
-                              From Date <span className="text-danger"> *</span>
+                              From Date {values.class && <span className="text-danger"> *</span>}
                             </Form.Label>
                           </Col>
 
                           <Col xs={12} md={4} className="mb-4">
                             <Form.Group>
                               <Form.Control
+                                disabled={!values.class}
                                 name="from_date"
                                 className="form-ctrl-style text-black"
                                 placeholder="Enter From Date"
@@ -361,13 +403,14 @@ export default function CreateAndEditHealthCareDataBase() {
 
                           <Col xs={12} md={2} className="label-col-style">
                             <Form.Label className="common-font-family mb-0">
-                              To Date <span className="text-danger"> *</span>
+                              To Date {values.class && <span className="text-danger"> *</span>}
                             </Form.Label>
                           </Col>
 
                           <Col xs={12} md={4} className="mb-4">
                             <Form.Group>
                               <Form.Control
+                                disabled={!values.class}
                                 name="to_date"
                                 className="form-ctrl-style text-black"
                                 placeholder="Enter To Date"
@@ -385,35 +428,39 @@ export default function CreateAndEditHealthCareDataBase() {
                           <Col xs={12} md={2} className="label-col-style">
                             <Form.Label className="common-font-family mb-0">
                               Treatment Type{" "}
-                              <span className="text-danger"> *</span>
+                              {values.class && <span className="text-danger"> *</span>}
                             </Form.Label>
                           </Col>
 
                           <Col xs={12} md={4} className="mb-4">
-                            <Form.Group>
-                              <Form.Control
+                            <Form.Select
+                                disabled={!values.class}
                                 name="treatment_type"
-                                className="form-ctrl-style"
-                                placeholder="Enter Treatment Type"
-                                type="text"
+                                className="form-ctrl-style dropdown-font-style"
                                 value={values.treatment_type}
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                              />
-                            </Form.Group>
+                              >
+                                <option value="">Select Treatment Type</option>
+                                <option value="Self">Self</option>
+                                <option value="OP">OP</option>
+                                <option value="IP">IP</option>
+                               
+                              </Form.Select>
                             <CustomErrorMessage name={"treatment_type"} />
                           </Col>
 
                           <Col xs={12} md={2} className="label-col-style">
                             <Form.Label className="common-font-family mb-0">
                               Nature of Sickness{" "}
-                              <span className="text-danger"> *</span>
+                              {values.class && <span className="text-danger"> *</span>}
                             </Form.Label>
                           </Col>
 
                           <Col xs={12} md={4} className="mb-4">
                             <Form.Group>
                               <Form.Control
+                                disabled={!values.class}
                                 name="nature_of_sickness"
                                 className="form-ctrl-style"
                                 placeholder="Enter Nature of Sickness"

@@ -10,7 +10,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 
-export default function HealthCareDatBase() {
+export default function ContactDataBase() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -24,67 +24,50 @@ export default function HealthCareDatBase() {
     //   Cell: ({ row }) => row.index + 1, // Dynamically generate S.No
     // },
     {
-      accessorKey: "studentName",
-      header: "Student Name",
+      accessorKey: "id",
+      header: "Id",
       size: 40,
       Cell: ({ cell }) => cell.getValue() || "-",
     },
     {
-      accessorKey: "admissionNo",
-      header: "Admission Number",
+      accessorKey: "name",
+      header: "Name",
       size: 40,
       Cell: ({ cell }) => cell.getValue() || "-",
     },
     {
-      accessorKey: "class",
-      header: "Class",
+      accessorKey: "mobileNo",
+      header: "Mobile No",
       size: 40,
       Cell: ({ cell }) => cell.getValue() || "-",
     },
     {
-      accessorKey: "section",
-      header: "Section",
+      accessorKey: "email",
+      header: "Email Id",
       size: 40,
       Cell: ({ cell }) => cell.getValue() || "-",
     },
     {
-      accessorKey: "contactNo",
-      header: "Contact Number",
-      size: 40,
-      Cell: ({ cell }) => cell.getValue() || "-",
-    },
-    {
-      accessorKey: "fatherName",
-      header: "Father Name",
-      size: 40,
-      Cell: ({ cell }) => cell.getValue() || "-",
-    },
-    {
-      accessorKey: "treatment_type",
-      header: "Treatment Type",
-      size: 40,
-      Cell: ({ cell }) => cell.getValue() || "-",
-    },
-    {
-      accessorKey: "nature_of_sickness",
-      header: "Nature of Sickness",
+      accessorKey: "contactType",
+      header: "Contact Type",
       size: 40,
       Cell: ({ cell }) => cell.getValue() || "-",
     },
   ];
 
-  const getHealthCareData = () => {
+  const getContactData = () => {
     axios
-      .get("https://www.santhoshavidhyalaya.com/SVSTEST/api/healthcare/viewAll")
+      .get("https://www.santhoshavidhyalaya.com/SVSTEST/api/contact/all")
       .then((res) => {
-        const isData = res?.data?.healthcare_records;
+        console.log('res?.data', res?.data)
+        const isData = res?.data?.contact;
         setData(isData);
         setLoading(false);
       });
   };
 
   useEffect(() => {
-    getHealthCareData();
+    getContactData();
   }, []);
 
   return (
@@ -101,12 +84,12 @@ export default function HealthCareDatBase() {
             <div>
               <div className="d-flex justify-content-between align-items-center py-3">
                 <div className="flex-grow-1 text-center title-txt">
-                  <h4 className="pb-0 m-0">Health Care Database</h4>
+                  <h4 className="pb-0 m-0">Contact </h4>
                 </div>
                 <Button
                   variant="primary"
                   onClick={() =>
-                    navigate("/create/and/edit/healthCare", {
+                    navigate("/create/and/edit/contactDatabase", {
                       state: {
                         type: "add",
                       },
@@ -147,7 +130,7 @@ export default function HealthCareDatBase() {
                       <IconButton
                         color="primary"
                         onClick={() =>
-                          navigate("/create/and/edit/healthCare", {
+                          navigate("/create/and/edit/contactDatabase", {
                             state: {
                               type: "edit",
                               id: row.original.id,
@@ -164,7 +147,7 @@ export default function HealthCareDatBase() {
                       <IconButton
                         color="success"
                         onClick={() => {
-                          navigate("/view/healthCare/details/", {
+                          navigate("/view/contactDatabase/details", {
                             state: { id: row.original.id },
                           });
                         }}

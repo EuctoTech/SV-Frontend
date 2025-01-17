@@ -69,6 +69,11 @@ import ViewStaffDetails from "./Admindashboard/Masters/StaffDataBase/ViewStaffDe
 import HealthCareDatBase from "./Admindashboard/Masters/HealthCareDataBase/HealthCareDataBase";
 import CreateAndEditHealthCareDataBase from "./Admindashboard/Masters/HealthCareDataBase/CreateAndEditHealthCareDataBase";
 import ViewHealthCareDataBase from "./Admindashboard/Masters/HealthCareDataBase/ViewHealthCareDataBase";
+import ContactDataBase from "./Admindashboard/Masters/ContactDataBase/ContactDataBase";
+import CreateAndEditContactDataBase from "./Admindashboard/Masters/ContactDataBase/CreateAndEditContactDataBase";
+import ViewContactDataBase from "./Admindashboard/Masters/ContactDataBase/ViewContactDataBase";
+import StudentMarkList from "./Admindashboard/Masters/StudentMarks/StudentMarkList";
+import CreateAndEditStudentMarks from "./Admindashboard/Masters/StudentMarks/CreateAndEditStudentMarks";
 
 export default function RoutesScreen() {
   const user_type = sessionStorage.getItem("user_type");
@@ -215,6 +220,25 @@ export default function RoutesScreen() {
           <Route
             path="/view/healthCare/details"
             element={<ViewHealthCareDataBase />}
+          />
+
+          <Route path="/contact/database" element={<ContactDataBase />} />
+          <Route
+            path="/create/and/edit/contactDatabase"
+            element={<CreateAndEditContactDataBase />}
+          />
+          <Route
+            path="/view/contactDatabase/details"
+            element={<ViewContactDataBase />}
+          />
+
+          <Route
+            path="/view/student/marks/list"
+            element={<StudentMarkList />}
+          />
+            <Route
+            path="/create/student/marks"
+            element={<CreateAndEditStudentMarks />}
           />
         </Routes>
         <LogoutComponent /> {/* Add the LogoutComponent here */}

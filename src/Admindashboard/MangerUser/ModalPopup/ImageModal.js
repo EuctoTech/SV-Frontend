@@ -3,6 +3,15 @@ import { Button, Modal } from "react-bootstrap";
 import "../../MangerUser/UsersStyles.css";
 
 export default function ImageModal({ modalStatus, handleModal }) {
+  const getFileExtension = (url) => {
+    const match = url.match(/\.\w+$/); // Matches the last ".something"
+    return match ? match[0] : null; // Returns the matched extension or null
+  };
+
+  // Example
+  const url = modalStatus.image;
+  const fileExtension = getFileExtension(url);
+
   // Download functionality
   const downloadImage = () => {
     const link = document.createElement("a");
@@ -29,14 +38,14 @@ export default function ImageModal({ modalStatus, handleModal }) {
     //     ></iframe>
     //   );
     // }
-     else if (file.image.match("http")) {
+    else if (file.image.match("http")) {
       return (
         <div>
-           <img
-          src={file.image}
-          alt="No Photo.."
-          style={{ maxWidth: "50%", height: "auto" }}
-        />
+          <img
+            src={file.image}
+            alt="No Photo.."
+            style={{ maxWidth: "50%", height: "auto" }}
+          />
           <p
             className="new-tab-style"
             onClick={() => window.open(file.image, "_blank")}
@@ -45,8 +54,7 @@ export default function ImageModal({ modalStatus, handleModal }) {
           </p>
         </div>
       );
-    } 
-    else {
+    } else {
       <p className="text-center">No Documents</p>;
     }
   };
@@ -78,9 +86,11 @@ export default function ImageModal({ modalStatus, handleModal }) {
                   <p>No file selected</p>
                 )}
               </div>
-              <div className="text-center py-3">
-                <Button onClick={downloadImage}>Download File</Button>
-              </div>
+              {fileExtension && (
+                <div className="text-center py-3">
+                  <Button onClick={downloadImage}>Download File</Button>
+                </div>
+              )}
             </div>
           ) : (
             <p className="text-center">No Documents</p>

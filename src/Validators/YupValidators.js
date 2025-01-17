@@ -176,4 +176,64 @@ export const handleStaffValidation = Yup.object().shape({
   staff_photo: Yup.string().typeError().required("Staff Image is required"),
 });
 
-export const handleHealthCareValidation = (edit_type) => Yup.object().shape({});
+export const handleHealthCareValidation = (edit_type) =>
+  Yup.object().shape({
+    class: Yup.string().required("Standard is required"),
+    student_name: Yup.string().when("class", {
+      is: (value) => value && value.trim() !== "", // Check if class is not empty
+      then: (schema) => schema.required("Student is required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
+
+    from_date: Yup.string().when("class", {
+      is: (value) => value && value.trim() !== "", // Check if class is not empty
+      then: (schema) => schema.required("From Date is required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
+
+    to_date: Yup.string().when("class", {
+      is: (value) => value && value.trim() !== "", // Check if class is not empty
+      then: (schema) => schema.required("To Date is required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
+
+    treatment_type: Yup.string().when("class", {
+      is: (value) => value && value.trim() !== "", // Check if class is not empty
+      then: (schema) => schema.required("Treatment Type is required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
+
+    nature_of_sickness: Yup.string().when("class", {
+      is: (value) => value && value.trim() !== "", // Check if class is not empty
+      then: (schema) => schema.required("Nature of Sickness is required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
+
+    // status: Yup.string().when("class", {
+    //   is: (value) => value && value.trim() !== "", // Check if class is not empty
+    //   then: (schema) => schema.required("Status is required"),
+    //   otherwise: (schema) => schema.nullable(),
+    // }),
+  });
+
+export const handleContactValidation = Yup.object().shape({
+  contact_id: Yup.string().required("Contact Id is required"),
+  name: Yup.string().required("Name is required"),
+  mobileNo: Yup.string().required("Mobile Number is required"),
+  email: Yup.string().required("Email Id is required"),
+  addressLine1: Yup.string().required("Address Line 1 is required"),
+  addressLine2: Yup.string().required("Address Line 2 is required"),
+  city: Yup.string().required("City is required"),
+  state: Yup.string().required("State is required"),
+  // country: Yup.string().required("Country is required"),
+  countryCode: Yup.string().required("Country Code is required"),
+  pincode: Yup.string().required("Pincode is required"),
+  contactType: Yup.string().required("Contact Type is required"),
+});
+
+export const handleStudentMarkValidation = Yup.object().shape({
+  term: Yup.string().required("Term is required"),
+  academicYear: Yup.string().required("Academic Year is required"),
+  standard: Yup.string().required("Standard is required"),
+  section: Yup.string().required("Section is required"),
+});

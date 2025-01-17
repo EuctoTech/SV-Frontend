@@ -726,15 +726,17 @@ export default function CreateAndEditStaff() {
 
                           <Col xs={12} md={4} className="mb-4">
                             <Form.Group>
-                              <Form.Control
+                               <Form.Select
                                 name="spouse_working"
-                                className="form-ctrl-style"
-                                placeholder="Enter Spouse Working"
-                                type="text"
+                                className="form-ctrl-style dropdown-font-style"
                                 value={values.spouse_working}
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                              />
+                              >
+                                <option value="">Select Spouse Working</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                              </Form.Select>
                             </Form.Group>
                             {/* <CustomErrorMessage name={"spouse_working"} /> */}
                           </Col>

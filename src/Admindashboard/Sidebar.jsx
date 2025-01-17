@@ -154,12 +154,12 @@ const Test = () => {
                           {/* <li class="nav-item" style={{marginLeft:'30px'}}>
                             <a class="nav-link text-white" href="/svsportaladmintest/MangerUser/Role" aria-current="page" ><CgEditBlackPoint className='pe-1 pt-1'/><span className='d-none d-sm-inline menuSpanText'>Role</span></a>
                         </li> */}
-                          <li class="nav-item" style={{ marginLeft: "30px" }}>
-                            <a
-                              class="nav-link text-white"
-                              href="/svsportaladmintest/MangerUser/StudentUser"
-                              aria-current="page"
-                            >
+                          <li
+                            class="nav-item"
+                            style={{ marginLeft: "30px", cursor: "pointer" }}
+                            onClick={() => navigate("/MangerUser/StudentUser")}
+                          >
+                            <a class="nav-link text-white" aria-current="page">
                               <CgEditBlackPoint className="pe-1 pt-1" />
                               <span className="d-none d-sm-inline menuSpanText">
                                 Student user
@@ -242,6 +242,7 @@ const Test = () => {
                               </span>
                             </a>
                           </li>
+                          
                           {/* <li style={{marginLeft:'30px'}} class="nav-item ">
                             <a class="nav-link text-white" href="/svsportaladmintest/Masters/SectionMaster"><CgEditBlackPoint className='pe-1'/><span className='d-none d-sm-inline'>Section</span></a>
                         </li>
@@ -263,8 +264,8 @@ const Test = () => {
                             </a>
                           </li>
                           <li
-                            style={{ marginLeft: "30px" }}
-                            class="nav-item pointer"
+                            style={{ marginLeft: "30px", cursor: "pointer" }}
+                            class="nav-item "
                             onClick={() => navigate("/staff/database")}
                           >
                             <a class="nav-link text-white">
@@ -275,8 +276,8 @@ const Test = () => {
                             </a>
                           </li>
                           <li
-                            style={{ marginLeft: "30px" }}
-                            class="nav-item pointer"
+                            style={{ marginLeft: "30px", cursor: "pointer" }}
+                            class="nav-item "
                             onClick={() => navigate("/healthCare/database")}
                           >
                             <a class="nav-link text-white">
@@ -286,8 +287,34 @@ const Test = () => {
                               </span>
                             </a>
                           </li>
+
+                          <li
+                            style={{ marginLeft: "30px", cursor: "pointer" }}
+                            class="nav-item "
+                            onClick={() => navigate("/contact/database")}
+                          >
+                            <a class="nav-link text-white">
+                              <CgEditBlackPoint className="pe-1" />
+                              <span className="d-none d-sm-inline">
+                                Contact Database
+                              </span>
+                            </a>
+                          </li>
+                          <li
+                            style={{ marginLeft: "30px", cursor: "pointer" }}
+                            class="nav-item "
+                            onClick={() => navigate("/view/student/marks/list")}
+                          >
+                            <a class="nav-link text-white">
+                              <CgEditBlackPoint className="pe-1" />
+                              <span className="d-none d-sm-inline">
+                                Student Marks
+                              </span>
+                            </a>
+                          </li>
                         </ul>
                       </li>
+                      
 
                       {/*-------------------- STUDENT FEES -----------------------------------------------*/}
                       {/* <li class="nav-item my-1 py-2 py-sm-0">

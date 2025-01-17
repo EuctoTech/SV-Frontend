@@ -146,3 +146,7 @@ td {
   font-size: 16px;
   font-weight: 400; /* Regular */
 }
+.photo-link-style{
+  color: #0056b3;
+  cursor: pointer;
+}
