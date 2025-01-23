@@ -13,127 +13,132 @@ import { useNavigate } from "react-router-dom";
 import "../../Admindashboard/MangerUser/UsersStyles.css";
 import { Spin } from "antd";
 
-const columns = [
-  {
-    accessorKey: "status",
-    header: "Status",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "admission_no",
-    header: "Admission No",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "roll_no",
-    header: "Roll No",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "STUDENT_NAME",
-    header: "Name",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "DOB_DD_MM_YYYY",
-    header: "DOB",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "SEX",
-    header: "GENDER",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "FATHER",
-    header: "Father Name",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "MOBILE_NUMBER",
-    header: "Father Mobile",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "EMAIL_ID",
-    header: "Father Email",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "MOTHER",
-    header: "Mother Name",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "WHATS_APP_NO",
-    header: "Mother Mobile",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "mother_email_id",
-    header: "Mother Email",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "EMIS_NO",
-    header: "EMIS No",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "address",
-    header: "Address",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "standard",
-    header: "Class",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "sec",
-    header: "Sec",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "BLOOD_GROUP",
-    header: "Blood Group",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "guardian_contact_no",
-    header: "Guardian No",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-  {
-    accessorKey: "GUARDIAN",
-    header: "Guardian Name",
-    size: 40,
-    Cell: ({ cell }) => cell.getValue() || "-",
-  },
-];
+
 
 const DatatableSprofile = () => {
   const [data, setData] = useState([]);
+  console.log('data[0].sec', data[0])
   const [isLoading, setLoading] = useState(true);
   const [isSelectedStatus, setSelectedStatus] = useState("");
+
+  console.log('data', data)
+
+  const columns = [
+    {
+      accessorKey: "status",
+      header: "Status",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "admission_no",
+      header: "Admission No",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "roll_no",
+      header: "Roll No",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "STUDENT_NAME",
+      header: "Name",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "DOB_DD_MM_YYYY",
+      header: "DOB",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "SEX",
+      header: "GENDER",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "FATHER",
+      header: "Father Name",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "MOBILE_NUMBER",
+      header: "Father Mobile",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "EMAIL_ID",
+      header: "Father Email",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "MOTHER",
+      header: "Mother Name",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "WHATS_APP_NO",
+      header: "Mother Mobile",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "mother_email_id",
+      header: "Mother Email",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "EMIS_NO",
+      header: "EMIS No",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "address",
+      header: "Address",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "standard",
+      header: "Class",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "sec",
+      header: "Sec",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "BLOOD_GROUP",
+      header: "Blood Group",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "guardian_contact_no",
+      header: "Guardian No",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+    {
+      accessorKey: "GUARDIAN",
+      header: "Guardian Name",
+      size: 40,
+      Cell: ({ cell }) => cell.getValue() || "-",
+    },
+  ];
 
   const exportToExcel = () => {
     const fileName = `Student_Report_${new Date()
@@ -274,11 +279,9 @@ const DatatableSprofile = () => {
       .then((res) => {
         const updatedData = res?.data?.students?.map((student) => ({
           ...student,
-          address: `${student.COMMUNICATION_HOUSE_NO || ""}, ${
-            student.C_STREET_NAME || ""
-          }, ${student.C_VILLAGE_TOWN_NAME || ""}, ${
-            student.C_DISTRICT || ""
-          }, ${student.C_STATE || ""},
+          address: `${student.COMMUNICATION_HOUSE_NO || ""}, ${student.C_STREET_NAME || ""
+            }, ${student.C_VILLAGE_TOWN_NAME || ""}, ${student.C_DISTRICT || ""
+            }, ${student.C_STATE || ""},
           ${student.C_PINCODE || ""}`, // Combine street name and district
         }));
 
@@ -366,7 +369,12 @@ const DatatableSprofile = () => {
           enableColumnFilters={true} // Disables the "Show/Hide Filter" option
           enableHiding={false}
           enableRowActions={true}
-          enableRowSelection={true} // Dynamically disable checkbox for "Nepal" rows
+          muiTableBodyRowProps={({ row }) => ({
+            sx: {
+              backgroundColor: !row.original.sec ? "#FAA0A0" : "inherit", // Red color if sec is empty/null
+            },
+          })}
+          enableRowSelection={(row) => Boolean(row.original.sec)} // Disable checkbox if sec is empty/null
           initialState={{
             showGlobalFilter: true, // Show the global search by default
             showColumnFilters: true, // Ensure column filters are hidden by default

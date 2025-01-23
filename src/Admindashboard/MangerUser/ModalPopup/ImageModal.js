@@ -86,11 +86,11 @@ export default function ImageModal({ modalStatus, handleModal }) {
                   <p>No file selected</p>
                 )}
               </div>
-              {fileExtension && (
+              {/* {fileExtension && (
                 <div className="text-center py-3">
                   <Button onClick={downloadImage}>Download File</Button>
                 </div>
-              )}
+              )} */}
             </div>
           ) : (
             <p className="text-center">No Documents</p>

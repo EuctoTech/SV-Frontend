@@ -236,4 +236,21 @@ export const handleStudentMarkValidation = Yup.object().shape({
   academicYear: Yup.string().required("Academic Year is required"),
   standard: Yup.string().required("Standard is required"),
   section: Yup.string().required("Section is required"),
+  group: Yup.string()
+  .when("standard", {
+    is: (value) => ["11", "12"].includes(value), // ✅ Handles both string & number
+    then: (schema) =>
+      schema.required("Group is required for 11th and 12th standard"),
+  })
+  .test(
+    "group-required",
+    "Group is required for 11th and 12th standard",
+    function (value) {
+      const { standard } = this.parent;
+      if (["11", "12", 11, 12].includes(standard)) {
+        return !!value; // ✅ Ensures group is required as soon as standard is selected
+      }
+      return true;
+    }
+  ),
 });
