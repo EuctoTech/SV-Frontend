@@ -2247,6 +2247,9 @@ export default function EditStudentProfile({ type, admission_id, profile_id }) {
                           <Col xs={12} md={2} className="label-col-style">
                             <Form.Label className="common-font-family mb-0">
                               Section
+                              {values.student_status === "Active" && (
+                                <span className="text-danger ">*</span>
+                              )}
                             </Form.Label>
                           </Col>
 
@@ -2262,6 +2265,7 @@ export default function EditStudentProfile({ type, admission_id, profile_id }) {
                                 onChange={handleChange}
                               />
                             </Form.Group>
+                            <CustomErrorMessage name={"student_section"} />
                           </Col>
                           <Col xs={0} md={6}></Col>
                         </Row>

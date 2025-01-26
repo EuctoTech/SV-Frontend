@@ -9,6 +9,7 @@ import MaterialReactTable from "material-react-table";
 import axios from "axios";
 import { Spin } from "antd";
 import Swal from "sweetalert2";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 
 export default function CreateAndEditStudentMarks() {
   const [years, setYears] = useState([]);
@@ -18,7 +19,8 @@ export default function CreateAndEditStudentMarks() {
   const [isLoading, setLoading] = useState(false);
   const [isSubjects, setSubjects] = useState([]);
   const [isFormValid, setIsFormValid] = useState(false);
-  console.log('osFormValid', isFormValid)
+  const [isSaveBtn, setIsSaveBtn] = useState(false);
+
   const [isSelectedValue, setSelectedValue] = useState({
     isTerm: "",
     isAcademicYear: "",
@@ -37,6 +39,7 @@ export default function CreateAndEditStudentMarks() {
   const navigate = useNavigate();
 
   const filterStudent = (values) => {
+    console.log("111");
     setLoading(true);
     axios
       .get(
@@ -45,9 +48,53 @@ export default function CreateAndEditStudentMarks() {
           : `https://www.santhoshavidhyalaya.com/SVSTEST/api/class-subjects/${values.standard}?sec=${values.section}&term=${values.term}`
       )
       .then((res) => {
-        setData(res?.data?.students);
+        const isStudents = res?.data?.students;
+
         setSubjects(res?.data?.subjects);
-        setLoading(false);
+
+        //get submitted api
+        axios
+          .post(
+            [11, 12].includes(values.standard)
+              ? `https://www.santhoshavidhyalaya.com/SVSTEST/api/StudentMark-view?term=${values.term}&standard=${values.standard}&section=${values.section}&group_no=${values.group}&academic_year=${values.academicYear}`
+              : `https://www.santhoshavidhyalaya.com/SVSTEST/api/StudentMark-view?term=${values.term}&standard=${values.standard}&section=${values.section}&academic_year=${values.academicYear}`
+          )
+          .then((res) => {
+            const submitData = res?.data;
+            console.log("submitData", submitData);
+            console.log("submitData.length", submitData.length);
+
+            if (submitData.length == 0) {
+              //get save api
+              axios
+                .get(
+                  [11, 12].includes(values.standard)
+                    ? `https://www.santhoshavidhyalaya.com/SVSTEST/api/marks/temporary?term=${values.term}&standard=${values.standard}&section=${values.section}&group_no=${values.group}&academic_year=${values.academicYear}`
+                    : `https://www.santhoshavidhyalaya.com/SVSTEST/api/marks/temporary?term=${values.term}&standard=${values.standard}&section=${values.section}&academic_year=${values.academicYear}`
+                )
+                .then((res) => {
+                  const saveData = res?.data?.data;
+                  if (saveData.length > 0) {
+                    setData(saveData);
+                    setLoading(false);
+                  } else {
+                    console.log("22222");
+                    setData(isStudents);
+                    setLoading(false);
+                  }
+                })
+                .catch(() => {
+                  setData(isStudents);
+                  setLoading(false);
+                });
+            } else {
+              console.log("3333");
+              setData(submitData);
+              setLoading(false);
+              setIsSaveBtn(true);
+            }
+          })
+          .catch(() => setLoading(false));
       })
       .catch(() => setLoading(false));
   };
@@ -63,17 +110,22 @@ export default function CreateAndEditStudentMarks() {
           const updatedRow = { ...row, [field]: value };
 
           // Calculate total marks
-          const totalMarks = isSubjects.reduce((sum, sub) => {
-            return sum + (parseInt(updatedRow[sub.subject.toLowerCase()]) || 0);
-          }, 0);
+          const totalMarks = isSubjects.reduce(
+            (sum, sub) =>
+              sum + (parseInt(updatedRow[sub.subject.toLowerCase()]) || 0),
+            0
+          );
 
           // Calculate percentage
           const totalOutOf = isSubjects.reduce(
-            (sum, sub) => sum + parseInt(sub.mark),
+            (sum, sub) => sum + parseInt(sub.mark || 0),
             0
           );
+
           const percentage =
             totalOutOf > 0 ? (totalMarks / totalOutOf) * 100 : 0;
+          console.log("totalMarks", totalMarks);
+          console.log("percentage", percentage);
 
           return {
             ...updatedRow,
@@ -116,14 +168,14 @@ export default function CreateAndEditStudentMarks() {
       prevData.map((item) =>
         item.id === rowId
           ? {
-            ...item,
-            [subject]: newCheckedState ? type : "", // If unchecked, set to empty
-            term: isSelectedValue.isTerm,
-            academicYear: isSelectedValue.isAcademicYear,
-            standard: isSelectedValue.isStandard,
-            section: isSelectedValue.isSection,
-            group: isSelectedValue.isGroup,
-          }
+              ...item,
+              [subject]: newCheckedState ? type : "", // If unchecked, set to empty
+              term: isSelectedValue.isTerm,
+              academicYear: isSelectedValue.isAcademicYear,
+              standard: isSelectedValue.isStandard,
+              section: isSelectedValue.isSection,
+              group: isSelectedValue.isGroup,
+            }
           : item
       )
     );
@@ -145,31 +197,49 @@ export default function CreateAndEditStudentMarks() {
       Cell: ({ cell }) => cell.getValue() || "-",
     },
     ...isSubjects.map(({ subject, mark }) => ({
-      accessorKey: subject.toLowerCase(), // Ensure accessor key is lowercase
+      accessorKey: subject.toLowerCase(),
       header: `${subject} (${mark})`,
       size: 40,
       Cell: ({ row }) => {
-        const isAbsentChecked =
-          checkedRows[`${row.id}-${subject.toLowerCase()}-absent`] || false;
-        const isNAChecked =
-          checkedRows[`${row.id}-${subject.toLowerCase()}-n/a`] || false;
+        const subjectKey = subject.toLowerCase();
 
-        const storedValue =
-          inputValues[`${row.id}-${subject.toLowerCase()}`] || "";
+        // Use let instead of const to allow reassignment
+        let isAbsentChecked =
+          checkedRows[`${row.id}-${subjectKey}-absent`] || false;
+        let isNAChecked = checkedRows[`${row.id}-${subjectKey}-n/a`] || false;
+
+        // Prefill the value based on data (marks, absent, or n/a)
+        let storedValue =
+          inputValues[`${row.id}-${subjectKey}`] ||
+          row.original[subjectKey] ||
+          "";
+
+        // If the value is "absent", make sure the input is empty
+        if (storedValue === "absent") {
+          storedValue = ""; // Empty the input field if absent
+          isAbsentChecked = true;
+          isNAChecked = false;
+        } else if (storedValue === "n/a") {
+          storedValue = ""; // Empty the input field if n/a
+          isAbsentChecked = false;
+          isNAChecked = true;
+        }
 
         return (
           <div>
+            {/* Text input for marks */}
             <Form.Group>
               <Form.Control
-                name={subject.toLowerCase()}
+                name={subjectKey}
                 className="form-ctrl-style"
                 placeholder="Enter Mark"
                 type="text"
                 value={storedValue}
                 onChange={(e) => {
                   const inputValue = e.target.value;
-                  const maxMark = mark; // Get the max mark from the subject object
+                  const maxMark = mark;
 
+                  // Validate input: ensure it's within the allowed marks range
                   if (inputValue !== "" && parseInt(inputValue) > maxMark) {
                     Swal.fire({
                       icon: "warning",
@@ -178,9 +248,9 @@ export default function CreateAndEditStudentMarks() {
                     return;
                   }
 
-                  handleInputChange(e, row.id, subject.toLowerCase());
+                  handleInputChange(e, row.id, subjectKey);
                 }}
-                disabled={isAbsentChecked || isNAChecked}
+                disabled={isSaveBtn === true || isAbsentChecked || isNAChecked} // Disable input if absent or n/a
               />
             </Form.Group>
 
@@ -190,19 +260,20 @@ export default function CreateAndEditStudentMarks() {
                 type="checkbox"
                 checked={isAbsentChecked}
                 onChange={() =>
-                  handleCheckboxChange(row.id, subject.toLowerCase(), "absent")
+                  handleCheckboxChange(row.id, subjectKey, "absent")
                 }
+                disabled={isSaveBtn === true}
               />
               <p className="common-font-family mx-2 mb-0">Absent</p>
             </div>
 
+            {/* Checkbox for "N/A" */}
             <div className="d-flex mt-2">
               <input
                 type="checkbox"
                 checked={isNAChecked}
-                onChange={() =>
-                  handleCheckboxChange(row.id, subject.toLowerCase(), "n/a")
-                }
+                onChange={() => handleCheckboxChange(row.id, subjectKey, "n/a")}
+                disabled={isSaveBtn === true}
               />
               <p className="common-font-family mx-2 mb-0">N/A</p>
             </div>
@@ -210,40 +281,46 @@ export default function CreateAndEditStudentMarks() {
         );
       },
     })),
-    {
-      accessorKey: "total",
-      header: `Total (${isSubjects.reduce(
-        (sum, sub) => sum + parseInt(sub.mark),
-        0
-      )})`,
-      size: 40,
-      Cell: ({ row }) => {
-        const total = isSubjects.reduce(
-          (sum, sub) =>
-            sum + (parseInt(row.original[sub.subject.toLowerCase()]) || 0),
-          0
-        );
-        return <h5 className="mb-0">{total}</h5>;
-      },
-    },
-    {
-      accessorKey: "percentage",
-      header: "Percentage(%)",
-      size: 40,
-      Cell: ({ row }) => {
-        const total = isSubjects.reduce(
-          (sum, sub) =>
-            sum + (parseInt(row.original[sub.subject.toLowerCase()]) || 0),
-          0
-        );
-        const totalOutOf = isSubjects.reduce(
-          (sum, sub) => sum + parseInt(sub.mark),
-          0
-        );
-        const percentage = (total / totalOutOf) * 100;
-        return <h5 className="mb-0">{percentage.toFixed(2)}%</h5>;
-      },
-    },
+    ...(isSubjects?.length > 0
+      ? [
+          {
+            accessorKey: "total",
+            header: `Total (${isSubjects.reduce(
+              (sum, sub) => sum + parseInt(sub.mark),
+              0
+            )})`,
+            size: 40,
+            Cell: ({ row }) => {
+              const total = isSubjects.reduce(
+                (sum, sub) =>
+                  sum +
+                  (parseInt(row.original[sub.subject.toLowerCase()]) || 0),
+                0
+              );
+              return <h5 className="mb-0">{total}</h5>;
+            },
+          },
+          {
+            accessorKey: "percentage",
+            header: "Percentage(%)",
+            size: 40,
+            Cell: ({ row }) => {
+              const total = isSubjects.reduce(
+                (sum, sub) =>
+                  sum +
+                  (parseInt(row.original[sub.subject.toLowerCase()]) || 0),
+                0
+              );
+              const totalOutOf = isSubjects.reduce(
+                (sum, sub) => sum + parseInt(sub.mark),
+                0
+              );
+              const percentage = (total / totalOutOf) * 100;
+              return <h5 className="mb-0">{percentage.toFixed(2)}%</h5>;
+            },
+          },
+        ]
+      : []),
   ];
 
   const standardOptions = [
@@ -283,43 +360,56 @@ export default function CreateAndEditStudentMarks() {
       icon: "success",
       timer: 2000, // Auto-close after 2 seconds
       showConfirmButton: false,
-    })
-      .then(() => {
-        navigate("/view/student/marks/list"); // Navigate to the previous page
-      });
+    }).then(() => {
+      navigate("/view/student/marks/list"); // Navigate to the previous page
+    });
   };
 
   const submitStudentMarks = () => {
     console.log("data", data);
-    setLoading(true)
+    setLoading(true);
     axios
       .post(
         "https://www.santhoshavidhyalaya.com/SVSTEST/api/StudentMark-Upload",
-        data,
+        data
       )
       .then((res) => {
         console.log("res", res);
-        successMessage("submit")
-        setLoading(false)
-
-      }).catch(() => setLoading(false))
+        successMessage("submit");
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   };
 
   const saveMarks = () => {
-    console.log("data", data);
-    setLoading(true)
+    setLoading(true);
+
+    // Prepare the data by filling missing fields for unfilled students
+    const dataToSend = data.map((student) => ({
+      ...student,
+      section: student.section || isSelectedValue.isSection,
+      term: student.term || isSelectedValue.isTerm,
+      standard: student.standard || isSelectedValue.isStandard,
+      academicYear: student.academicYear || isSelectedValue.isAcademicYear,
+      // Ensure other fields are filled if necessary
+    }));
+
+    // Send the updated data to the backend
     axios
       .post(
         "https://www.santhoshavidhyalaya.com/SVSTEST/api/marks/save-temporary",
-        data,
+        dataToSend
       )
       .then((res) => {
-        console.log("res", res);
-        successMessage("save")
-        setLoading(false)
-
-      }).catch(() => setLoading(false))
-  }
+        console.log("Response from backend:", res);
+        successMessage("save");
+        setLoading(false); // Hide loading state
+      })
+      .catch((error) => {
+        console.error("Error saving data:", error);
+        setLoading(false); // Hide loading state on error
+      });
+  };
 
   useEffect(() => {
     const currentYear = new Date().getFullYear();
@@ -352,7 +442,8 @@ export default function CreateAndEditStudentMarks() {
     const isAllMarksEntered = data.every((student) =>
       isSubjects.every((subject) => {
         const subjectKey = subject.subject.toLowerCase();
-        const isAbsentChecked = checkedRows[`${student.id}-${subjectKey}-absent`];
+        const isAbsentChecked =
+          checkedRows[`${student.id}-${subjectKey}-absent`];
         const isNAChecked = checkedRows[`${student.id}-${subjectKey}-n/a`];
 
         if (isAbsentChecked || isNAChecked) return true; // Ignore validation for absent/N/A students
@@ -360,7 +451,6 @@ export default function CreateAndEditStudentMarks() {
         return student[subjectKey] !== undefined && student[subjectKey] !== "";
       })
     );
-
     setIsFormValid(isAllMarksEntered);
   }, [data, checkedRows, isSubjects]);
 
@@ -371,8 +461,8 @@ export default function CreateAndEditStudentMarks() {
         <Header />
         <section className="p-4">
           <Container className="edit-container shadow-sm">
-            <div className="title-col-txt">
-              <h1 className="title-txt">Student Marks Upload</h1>
+            <div className="flex-grow-1 text-center title-txt">
+              <h4 className="pb-0 m-0">Upload Marks </h4>
             </div>
             <Formik
               initialValues={formValues} // Set initial values from formValues state
@@ -409,6 +499,9 @@ export default function CreateAndEditStudentMarks() {
                                   ...prevState,
                                   isTerm: e.target.value,
                                 }));
+                                setData([]);
+                                setSubjects([]);
+                                setIsSaveBtn(false);
                               }}
                             >
                               <option value="">Select Term</option>
@@ -439,6 +532,9 @@ export default function CreateAndEditStudentMarks() {
                                   ...prevState,
                                   isAcademicYear: e.target.value,
                                 }));
+                                setData([]);
+                                setSubjects([]);
+                                setIsSaveBtn(false);
                               }}
                             >
                               <option value="">Select Academic Year</option>
@@ -473,6 +569,9 @@ export default function CreateAndEditStudentMarks() {
                                   ...prevState,
                                   isStandard: e.target.value,
                                 }));
+                                setData([]);
+                                setSubjects([]);
+                                setIsSaveBtn(false);
                               }}
                             >
                               {standardOptions?.map((option) => (
@@ -506,6 +605,9 @@ export default function CreateAndEditStudentMarks() {
                                   ...prevState,
                                   isSection: e.target.value,
                                 }));
+                                setIsSaveBtn(false);
+                                setData([]);
+                                setSubjects([]);
                               }}
                             >
                               <option value="">Select Section</option>
@@ -539,6 +641,9 @@ export default function CreateAndEditStudentMarks() {
                                     ...prevState,
                                     isGroup: e.target.value,
                                   }));
+                                  setIsSaveBtn(false);
+                                  setData([]);
+                                  setSubjects([]);
                                 }}
                               >
                                 <option value="">Select Group</option>
@@ -562,7 +667,7 @@ export default function CreateAndEditStudentMarks() {
                             className="common-font-family w-100"
                             variant="primary"
                           >
-                            Select
+                            Search
                           </Button>
                         </Col>
                       </Row>
@@ -577,6 +682,20 @@ export default function CreateAndEditStudentMarks() {
               </div>
             ) : (
               <div>
+                <div className="d-flex text-danger">
+                  <ErrorOutlineOutlinedIcon />
+                  <p className="px-2">
+                    You can save your progress as a draft and continue later.
+                    Once all marks are submitted, editing will be disabled.
+                  </p>
+                </div>
+                <div className="d-flex text-danger">
+                  <ErrorOutlineOutlinedIcon />
+                  <p className="px-2">
+                    Please ensure that all marks are entered correctly before
+                    submitting.
+                  </p>
+                </div>
                 {data?.length > 0 ? (
                   <div>
                     <MaterialReactTable
@@ -595,7 +714,9 @@ export default function CreateAndEditStudentMarks() {
                         },
                       }}
                     />
-                    <div >
+                    <div>
+                      {console.log("isFormValid", isFormValid)}
+                      {console.log("!isFormValid", !isFormValid)}
                       <Row className="d-flex justify-content-end">
                         <Col xs={0} md={6} />
                         <Col xs={12} md={3}>
@@ -603,22 +724,26 @@ export default function CreateAndEditStudentMarks() {
                             onClick={() => saveMarks()}
                             className="common-font-family mt-4 w-100"
                             variant="primary"
+                            disabled={isSaveBtn === true ? true : false}
                           >
-                            Save
+                            Save as Draft
                           </Button>
                         </Col>
                         <Col xs={12} sm="auto" md={3}>
                           <Button
                             onClick={() => submitStudentMarks()}
                             className="common-font-family mt-4 w-100 "
-                            variant={!isFormValid ? "secondary" : "success"}
-                            disabled={!isFormValid} // Disable button if not all marks are entered
+                            variant={
+                              isSaveBtn === true || !isFormValid
+                                ? "secondary"
+                                : "success"
+                            }
+                            disabled={isSaveBtn === true || !isFormValid} // Disable button if not all marks are entered
                           >
                             Submit
                           </Button>
                         </Col>
                       </Row>
-
                     </div>
                   </div>
                 ) : (

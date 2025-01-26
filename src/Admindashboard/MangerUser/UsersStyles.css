@@ -150,3 +150,6 @@ td {
   color: #0056b3;
   cursor: pointer;
 }
+/* .ck-editor__editable_inline {
+  pointer-events: none;
+} */

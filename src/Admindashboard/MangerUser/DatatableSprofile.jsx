@@ -12,16 +12,15 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../Admindashboard/MangerUser/UsersStyles.css";
 import { Spin } from "antd";
-
-
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 
 const DatatableSprofile = () => {
   const [data, setData] = useState([]);
-  console.log('data[0].sec', data[0])
+  console.log("data[0].sec", data[0]);
   const [isLoading, setLoading] = useState(true);
   const [isSelectedStatus, setSelectedStatus] = useState("");
 
-  console.log('data', data)
+  console.log("data", data);
 
   const columns = [
     {
@@ -279,9 +278,11 @@ const DatatableSprofile = () => {
       .then((res) => {
         const updatedData = res?.data?.students?.map((student) => ({
           ...student,
-          address: `${student.COMMUNICATION_HOUSE_NO || ""}, ${student.C_STREET_NAME || ""
-            }, ${student.C_VILLAGE_TOWN_NAME || ""}, ${student.C_DISTRICT || ""
-            }, ${student.C_STATE || ""},
+          address: `${student.COMMUNICATION_HOUSE_NO || ""}, ${
+            student.C_STREET_NAME || ""
+          }, ${student.C_VILLAGE_TOWN_NAME || ""}, ${
+            student.C_DISTRICT || ""
+          }, ${student.C_STATE || ""},
           ${student.C_PINCODE || ""}`, // Combine street name and district
         }));
 
@@ -358,113 +359,133 @@ const DatatableSprofile = () => {
           <Spin size="large" />
         </div>
       ) : (
-        <MaterialReactTable
-          columns={columns}
-          data={data}
-          paginationDisplayMode="pages"
-          enableStickyHeader={true}
-          enableFullScreenToggle={false}
-          getRowId={(row) => row.id}
-          enableGlobalFilter={true} // Enables the "Show/Hide Search" option
-          enableColumnFilters={true} // Disables the "Show/Hide Filter" option
-          enableHiding={false}
-          enableRowActions={true}
-          muiTableBodyRowProps={({ row }) => ({
-            sx: {
-              backgroundColor: !row.original.sec ? "#FAA0A0" : "inherit", // Red color if sec is empty/null
-            },
-          })}
-          enableRowSelection={(row) => Boolean(row.original.sec)} // Disable checkbox if sec is empty/null
-          initialState={{
-            showGlobalFilter: true, // Show the global search by default
-            showColumnFilters: true, // Ensure column filters are hidden by default
-            pagination: {
-              pageSize: 100,
-            },
-            columnOrder: [
-              "mrt-row-select", // Ensure the checkbox column is displayed first
-              "mrt-row-actions", // Ensure the actions column is displayed next
-              ...columns.map((col) => col.accessorKey || col.id), // Other columns in their default order
-            ],
-          }}
-          displayColumnDefOptions={{
-            "mrt-row-actions": {
-              visibleInShowHideMenu: false, // Hide row actions column from the show/hide menu
-            },
-          }}
-          muiTableBodyCellProps={({ cell, column }) => ({
-            children: cell.getValue() || "-",
-          })}
-          renderTopToolbarCustomActions={({ table }) => (
-            <Box
-              sx={{
-                display: "flex",
-                gap: "16px",
-                padding: "8px",
-                flexWrap: "wrap",
+        <div>
+          <div className="d-flex text-danger ">
+            <div
+              style={{
+                backgroundColor: "#FAA0A0",
+                width: "40px",
+                height: "30px",
+                borderRadius: "4px",
+                marginRight: "5px",
               }}
-            >
-              <Button variant="primary" onClick={exportToExcel}>
-                Export to Excel
-              </Button>
-              <select
-                className="status-dropdown"
-                name="status"
-                // onChange={(res) => updateUser(table, res.target.value)}
-                onChange={(res) => {
-                  const selectedRows = table.getSelectedRowModel().rows; // Get selected rows
-                  const selectedData = selectedRows.map((row) => row.original); // Map to row data
-                  const ids = selectedData.map((item) => item.id);
-                  if (selectedData && selectedData.length > 0) {
-                    handleUpdateUser(ids, res.target.value);
-                  } else {
-                    handleNoUserSelect();
-                  }
+            />
+            <ErrorOutlineOutlinedIcon />
+            <p className="px-1">
+              This color indicates that the student's section has not been
+              created yet
+            </p>
+          </div>
+          <MaterialReactTable
+            columns={columns}
+            data={data}
+            paginationDisplayMode="pages"
+            enableStickyHeader={true}
+            enableFullScreenToggle={false}
+            getRowId={(row) => row.id}
+            enableGlobalFilter={true} // Enables the "Show/Hide Search" option
+            enableColumnFilters={true} // Disables the "Show/Hide Filter" option
+            enableHiding={false}
+            enableRowActions={true}
+            muiTableBodyRowProps={({ row }) => ({
+              sx: {
+                backgroundColor: !row.original.sec ? "#FAA0A0" : "inherit", // Red color if sec is empty/null
+              },
+            })}
+            enableRowSelection={(row) => Boolean(row.original.sec)} // Disable checkbox if sec is empty/null
+            initialState={{
+              showGlobalFilter: true, // Show the global search by default
+              showColumnFilters: true, // Ensure column filters are hidden by default
+              pagination: {
+                pageSize: 100,
+              },
+              columnOrder: [
+                "mrt-row-select", // Ensure the checkbox column is displayed first
+                "mrt-row-actions", // Ensure the actions column is displayed next
+                ...columns.map((col) => col.accessorKey || col.id), // Other columns in their default order
+              ],
+            }}
+            displayColumnDefOptions={{
+              "mrt-row-actions": {
+                visibleInShowHideMenu: false, // Hide row actions column from the show/hide menu
+              },
+            }}
+            muiTableBodyCellProps={({ cell, column }) => ({
+              children: cell.getValue() || "-",
+            })}
+            renderTopToolbarCustomActions={({ table }) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "16px",
+                  padding: "8px",
+                  flexWrap: "wrap",
                 }}
-                value={isSelectedStatus}
               >
-                {dropdownOptions.map((item, index) => (
-                  <option value={item.value} key={index}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </Box>
-          )}
-          renderRowActions={({ row }) => (
-            <div style={{ display: "flex", gap: "8px" }}>
-              {/* Edit Action */}
-              <Tooltip title="Edit">
-                <IconButton
-                  color="primary"
-                  onClick={() =>
-                    navigate("/student/edit/tabs", {
-                      state: {
-                        admission_id: row?.original?.admission_id,
-                        profile_id: row?.original?.profile_id,
-                      },
-                    })
-                  }
-                >
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-              {/* View Action */}
-              <Tooltip title="View">
-                <IconButton
-                  color="success"
-                  onClick={() => {
-                    navigate("/MangerUser/Viewprofile", {
-                      state: { id: row?.original?.profile_id },
-                    });
+                <Button variant="primary" onClick={exportToExcel}>
+                  Export to Excel
+                </Button>
+                <select
+                  className="status-dropdown"
+                  name="status"
+                  // onChange={(res) => updateUser(table, res.target.value)}
+                  onChange={(res) => {
+                    const selectedRows = table.getSelectedRowModel().rows; // Get selected rows
+                    const selectedData = selectedRows.map(
+                      (row) => row.original
+                    ); // Map to row data
+                    const ids = selectedData.map((item) => item.id);
+                    if (selectedData && selectedData.length > 0) {
+                      handleUpdateUser(ids, res.target.value);
+                    } else {
+                      handleNoUserSelect();
+                    }
                   }}
+                  value={isSelectedStatus}
                 >
-                  <RemoveRedEyeOutlinedIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-          )}
-        />
+                  {dropdownOptions.map((item, index) => (
+                    <option value={item.value} key={index}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </Box>
+            )}
+            renderRowActions={({ row }) => (
+              <div style={{ display: "flex", gap: "8px" }}>
+                {/* Edit Action */}
+                <Tooltip title="Edit">
+                  <IconButton
+                    color="primary"
+                    onClick={() =>
+                      navigate("/student/edit/tabs", {
+                        state: {
+                          admission_id: row?.original?.admission_id,
+                          profile_id: row?.original?.profile_id,
+                        },
+                      })
+                    }
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                {/* View Action */}
+                <Tooltip title="View">
+                  <IconButton
+                    color="success"
+                    onClick={() => {
+                      navigate("/MangerUser/Viewprofile", {
+                        state: { id: row?.original?.profile_id },
+                      });
+                    }}
+                  >
+                    <RemoveRedEyeOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            )}
+          />
+        </div>
       )}
     </div>
   );

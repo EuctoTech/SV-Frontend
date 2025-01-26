@@ -9,17 +9,18 @@ import { handleStudentMarkValidation } from "../../../Validators/YupValidators";
 import MaterialReactTable from "material-react-table";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import axios from "axios";
 import { Spin } from "antd";
 
 export default function StudentMarkList() {
   const [years, setYears] = useState([]);
-  const [data, setData] = useState([])
-  const [isSubjects, setSubjects] = useState()
+  const [data, setData] = useState([]);
+  const [isSubjects, setSubjects] = useState();
   const [isLoading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const [isSelectedValue, setSelectedValue] = useState({ isTerm: "", isAcademicYear: "", isStandard: "", isSection: "", isGroup: "" })
+  const [isFormValid, setFormValid] = useState(false);
+  const [isWarnMsg, setWarnMsg] = useState(false);
   const [formValues, setFormValues] = useState({
     term: "",
     academicYear: "",
@@ -27,6 +28,8 @@ export default function StudentMarkList() {
     section: "",
     group: "",
   });
+
+  const navigate = useNavigate();
 
   // const exportToExcel = () => {
   //     const fileName = `Student_Report_${new Date()
@@ -176,48 +179,76 @@ export default function StudentMarkList() {
       Cell: ({ cell }) => cell.getValue() || "-",
     },
     // Ensure subjects are placed before total and percentage
-    ...(Array.isArray(isSubjects) ? isSubjects.map(({ subject, mark }) => ({
-      accessorKey: subject.toLowerCase(),
-      header: `${subject} (${mark})`,
-      size: 40,
-      Cell: ({ row }) => row.original[subject.toLowerCase()] || "-",
-    })) : []), 
+    ...(Array.isArray(isSubjects)
+      ? isSubjects.map(({ subject, mark }) => ({
+          accessorKey: subject.toLowerCase(),
+          header: `${subject} (${mark})`,
+          size: 40,
+          Cell: ({ row }) => {
+            const value = row.original[subject.toLowerCase()];
 
-    ...(isSubjects?.length > 0 ? [ // Wrap inside an array and spread it
-      {
-        accessorKey: "total",
-        header: `Total (${isSubjects.reduce((sum, sub) => sum + parseInt(sub.mark), 0)})`,
-        size: 40,
-        Cell: ({ row }) => {
-          const total = isSubjects.reduce(
-            (sum, sub) => sum + (parseInt(row.original[sub.subject.toLowerCase()]) || 0),
-            0
-          );
-          return <h5 className="mb-0">{total}</h5>;
-        },
-      },
-      {
-        accessorKey: "percentage",
-        header: "Percentage(%)",
-        size: 40,
-        Cell: ({ row }) => {
-          const total = isSubjects.reduce(
-            (sum, sub) => sum + (parseInt(row.original[sub.subject.toLowerCase()]) || 0),
-            0
-          );
-          const totalOutOf = isSubjects.reduce((sum, sub) => sum + parseInt(sub.mark), 0);
-          const percentage = totalOutOf > 0 ? (total / totalOutOf) * 100 : 0;
-          return <h5 className="mb-0">{percentage.toFixed(2)}%</h5>;
-        },
-      },
-    ] : []), // Return an empty array if isSubjects is empty
+            if (value === "absent") {
+              return "Absent";
+            } else if (value === "n/a") {
+              return "N/A";
+            } else if (row.original[subject.toLowerCase()]) {
+              return row.original[subject.toLowerCase()];
+            } else {
+              return value || "-";
+            }
+          },
+        }))
+      : []),
+
+    ...(isSubjects?.length > 0
+      ? [
+          // Wrap inside an array and spread it
+          {
+            accessorKey: "total",
+            header: `Total (${isSubjects.reduce(
+              (sum, sub) => sum + parseInt(sub.mark),
+              0
+            )})`,
+            size: 40,
+            Cell: ({ row }) => {
+              const total = isSubjects.reduce(
+                (sum, sub) =>
+                  sum +
+                  (parseInt(row.original[sub.subject.toLowerCase()]) || 0),
+                0
+              );
+              return <h5 className="mb-0">{total}</h5>;
+            },
+          },
+          {
+            accessorKey: "percentage",
+            header: "Percentage(%)",
+            size: 40,
+            Cell: ({ row }) => {
+              const total = isSubjects.reduce(
+                (sum, sub) =>
+                  sum +
+                  (parseInt(row.original[sub.subject.toLowerCase()]) || 0),
+                0
+              );
+              const totalOutOf = isSubjects.reduce(
+                (sum, sub) => sum + parseInt(sub.mark),
+                0
+              );
+              const percentage =
+                totalOutOf > 0 ? (total / totalOutOf) * 100 : 0;
+              return <h5 className="mb-0">{percentage.toFixed(2)}%</h5>;
+            },
+          },
+        ]
+      : []), // Return an empty array if isSubjects is empty
   ];
 
-
-
-
   const filterStudent = (values) => {
-    setLoading(true)
+    console.log("values", values);
+    setLoading(true);
+
+    //get subject api
     axios
       .get(
         [11, 12].includes(values.standard)
@@ -225,20 +256,44 @@ export default function StudentMarkList() {
           : `https://www.santhoshavidhyalaya.com/SVSTEST/api/class-subjects/${values.standard}?sec=${values.section}&term=${values.term}`
       )
       .then((res) => {
-        console.log('subjects', res?.data?.subjects)
-        const data = res?.data?.subjects
+        const data = res?.data?.subjects;
         setSubjects(data || []);
-      }).catch(() => setLoading(false));
+      })
+      .catch(() => setLoading(false));
 
-    axios.post([11, 12].includes(values.standard)
-      ? `https://www.santhoshavidhyalaya.com/SVSTEST/api/StudentMark-view?term=${values.term}&standard=${values.standard}&section=${values.section}&academic_year=${values.academicYear}` :
-      `https://www.santhoshavidhyalaya.com/SVSTEST/api/StudentMark-view?term=${values.term}&standard=${values.standard}&section=${values.section}&group_no=${values.group}&academic_year=${values.academicYear}`).then((res) => {
-        console.log('data value', res?.data)
-        const data = res?.data
-        setData(data || [])
-        setLoading(false)
-      }).catch(() => setLoading(false));
-  }
+    //get submitted api
+    axios
+      .post(
+        [11, 12].includes(values.standard)
+          ? `https://www.santhoshavidhyalaya.com/SVSTEST/api/StudentMark-view?term=${values.term}&standard=${values.standard}&section=${values.section}&group_no=${values.group}&academic_year=${values.academicYear}`
+          : `https://www.santhoshavidhyalaya.com/SVSTEST/api/StudentMark-view?term=${values.term}&standard=${values.standard}&section=${values.section}&academic_year=${values.academicYear}`
+      )
+      .then((res) => {
+        const submitData = res?.data;
+
+        if (submitData.length == 0) {
+          //get save api
+          axios
+            .get(
+              [11, 12].includes(values.standard)
+                ? `https://www.santhoshavidhyalaya.com/SVSTEST/api/marks/temporary?term=${values.term}&standard=${values.standard}&section=${values.section}&group_no=${values.group}&academic_year=${values.academicYear}`
+                : `https://www.santhoshavidhyalaya.com/SVSTEST/api/marks/temporary?term=${values.term}&standard=${values.standard}&section=${values.section}&academic_year=${values.academicYear}`
+            )
+            .then((res) => {
+              const saveData = res?.data?.data;
+              setData(saveData || []);
+              setLoading(false);
+              setWarnMsg(true);
+            })
+            .catch(() => setLoading(false));
+        } else {
+          setFormValid(true);
+          setData(submitData || []);
+          setLoading(false);
+        }
+      })
+      .catch(() => setLoading(false));
+  };
 
   useEffect(() => {
     const currentYear = new Date().getFullYear();
@@ -259,22 +314,15 @@ export default function StudentMarkList() {
       <div style={{ width: "82.5%", float: "right" }}>
         <Header />
         <section className="p-4">
-          <div className="d-flex justify-content-end py-4">
+          <div className="d-flex justify-content-end py-4 pt-2">
             <Button
               variant="primary"
-              onClick={() =>
-                navigate("/create/student/marks", {
-                  state: {
-                    type: "add",
-                  },
-                })
-              }
+              onClick={() => navigate("/create/student/marks")}
             >
-              Add <Add />
+              Upload <Add />
             </Button>
           </div>
           <Container className="edit-container shadow-sm">
-
             <div className="d-flex justify-content-between align-items-center py-3">
               <div className="flex-grow-1 text-center title-txt">
                 <h4 className="pb-0 m-0">Students Mark list </h4>
@@ -286,7 +334,6 @@ export default function StudentMarkList() {
               enableReinitialize={false} // Do not reinitialize on each render
               onSubmit={(values) => {
                 filterStudent(values);
-
               }}
               validationSchema={handleStudentMarkValidation}
             >
@@ -312,7 +359,10 @@ export default function StudentMarkList() {
                               value={values.term}
                               onBlur={handleBlur}
                               onChange={(e) => {
-                                handleChange(e); setSelectedValue(prevState => ({ ...prevState, isTerm: e.target.value }));
+                                handleChange(e);
+                                setData([]);
+                                setWarnMsg(false);
+                                setFormValid(false);
                               }}
                             >
                               <option value="">Select Term</option>
@@ -338,7 +388,10 @@ export default function StudentMarkList() {
                               className="form-ctrl-style dropdown-font-style"
                               value={values.academicYear}
                               onChange={(e) => {
-                                handleChange(e); setSelectedValue(prevState => ({ ...prevState, isAcademicYear: e.target.value }));
+                                handleChange(e);
+                                setData([]);
+                                setWarnMsg(false);
+                                setFormValid(false);
                               }}
                             >
                               <option value="">Select Academic Year</option>
@@ -368,7 +421,10 @@ export default function StudentMarkList() {
                               value={values.standard}
                               onBlur={handleBlur}
                               onChange={(e) => {
-                                handleChange(e); setSelectedValue(prevState => ({ ...prevState, isStandard: e.target.value }));
+                                handleChange(e);
+                                setData([]);
+                                setWarnMsg(false);
+                                setFormValid(false);
                               }}
                             >
                               {standardOptions?.map((option) => (
@@ -397,7 +453,10 @@ export default function StudentMarkList() {
                               className="form-ctrl-style dropdown-font-style"
                               value={values.section}
                               onChange={(e) => {
-                                handleChange(e); setSelectedValue(prevState => ({ ...prevState, isSection: e.target.value }));
+                                handleChange(e);
+                                setData([]);
+                                setWarnMsg(false);
+                                setFormValid(false);
                               }}
                             >
                               <option value="">Select Section</option>
@@ -411,7 +470,7 @@ export default function StudentMarkList() {
                         </Col>
                       </Row>
 
-                      {["11", "12"].includes(values.standard) &&
+                      {["11", "12"].includes(values.standard) && (
                         <Row className="row-style px-2">
                           <Col xs={12} md={2} className="label-col-style">
                             <Form.Label className="common-font-family mb-0">
@@ -426,7 +485,10 @@ export default function StudentMarkList() {
                                 className="form-ctrl-style dropdown-font-style"
                                 value={values.group}
                                 onChange={(e) => {
-                                  handleChange(e); setSelectedValue(prevState => ({ ...prevState, isGroup: e.target.value }));
+                                  handleChange(e);
+                                  setData([]);
+                                  setWarnMsg(false);
+                                  setFormValid(false);
                                 }}
                               >
                                 <option value="">Select Group</option>
@@ -435,14 +497,13 @@ export default function StudentMarkList() {
                                 <option value="3">III</option>
                                 <option value="4">IV</option>
                                 <option value="5">V</option>
-
                               </Form.Select>
                             </Form.Group>
                             <CustomErrorMessage name={"group"} />
                           </Col>
                           <Col xs={12} md={6} />
                         </Row>
-                      }
+                      )}
 
                       <Row className="p-2 py-3 d-flex justify-content-end">
                         <Col xs={12} md={4}>
@@ -451,7 +512,7 @@ export default function StudentMarkList() {
                             className="common-font-family w-100"
                             variant="primary"
                           >
-                            Select
+                            Search
                           </Button>
                         </Col>
                       </Row>
@@ -466,7 +527,15 @@ export default function StudentMarkList() {
               </div>
             ) : (
               <div>
-
+                {isWarnMsg && (
+                  <div className="d-flex text-danger">
+                    <ErrorOutlineOutlinedIcon />
+                    <p className="px-2">
+                      Marks entry is incomplete. Please complete all entries
+                      before viewing the report card.
+                    </p>
+                  </div>
+                )}
                 {data?.length > 0 ? (
                   <MaterialReactTable
                     columns={columns}
@@ -481,7 +550,12 @@ export default function StudentMarkList() {
                       pagination: {
                         pageSize: 100,
                       },
-                      columnOrder: ["mrt-row-actions", ...columns.map((col) => col.accessorKey)],
+                      columnOrder: isFormValid
+                        ? [
+                            "mrt-row-actions",
+                            ...columns.map((col) => col.accessorKey),
+                          ]
+                        : [...columns.map((col) => col.accessorKey)], // Remove "mrt-row-actions" when isFormValid is false
                     }}
                     displayColumnDefOptions={{
                       "mrt-row-actions": {
@@ -491,15 +565,25 @@ export default function StudentMarkList() {
                     muiTableBodyCellProps={({ cell }) => ({
                       children: cell.getValue() || "-",
                     })}
-                    renderTopToolbarCustomActions={() => (
-                      <Box sx={{ display: "flex", gap: "16px", padding: "8px", flexWrap: "wrap" }}>
-                        <Button variant="primary">Export to Excel</Button>
-                      </Box>
-                    )}
-                    renderRowActions={({ row }) => (
-                      <div style={{ display: "flex", gap: "8px" }}>
-                        {/* Edit Action */}
-                        <Tooltip title="Edit">
+                    // renderTopToolbarCustomActions={() => (
+                    //   <Box
+                    //     sx={{
+                    //       display: "flex",
+                    //       gap: "16px",
+                    //       padding: "8px",
+                    //       flexWrap: "wrap",
+                    //     }}
+                    //   >
+                    //     <Button variant="primary">Export to Excel</Button>
+                    //   </Box>
+                    // )}
+
+                    renderRowActions={
+                      isFormValid
+                        ? ({ row }) => (
+                            <div style={{ display: "flex", gap: "8px" }}>
+                              {/* Edit Action */}
+                              {/* <Tooltip title="Edit">
                           <IconButton
                             color="primary"
                             onClick={() =>
@@ -513,20 +597,27 @@ export default function StudentMarkList() {
                           >
                             <EditIcon />
                           </IconButton>
-                        </Tooltip>
-                        {/* View Action */}
-                        <Tooltip title="View">
-                          <IconButton
-                            color="success"
-                            onClick={() =>
-                              navigate("/MangerUser/Viewprofile", { state: { id: row?.original?.profile_id } })
-                            }
-                          >
-                            <RemoveRedEyeOutlinedIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </div>
-                    )}
+                        </Tooltip> */}
+
+                              {/* View Action */}
+                              <Tooltip title="Report PDF">
+                                <IconButton
+                                  color="primary"
+                                  onClick={() =>
+                                    navigate("/pdf/viewer", {
+                                      state: {
+                                        stuData: row?.original,
+                                      },
+                                    })
+                                  }
+                                >
+                                  <ReceiptLongOutlinedIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </div>
+                          )
+                        : undefined
+                    }
                   />
                 ) : (
                   <div className="py-5">
@@ -535,7 +626,6 @@ export default function StudentMarkList() {
                 )}
               </div>
             )}
-
           </Container>
         </section>
       </div>

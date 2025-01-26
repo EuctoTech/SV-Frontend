@@ -74,6 +74,8 @@ import CreateAndEditContactDataBase from "./Admindashboard/Masters/ContactDataBa
 import ViewContactDataBase from "./Admindashboard/Masters/ContactDataBase/ViewContactDataBase";
 import StudentMarkList from "./Admindashboard/Masters/StudentMarks/StudentMarkList";
 import CreateAndEditStudentMarks from "./Admindashboard/Masters/StudentMarks/CreateAndEditStudentMarks";
+import ReporCard from "./Admindashboard/Masters/StudentMarks/ReportCard";
+import PDFviewer from "./Admindashboard/Masters/StudentMarks/PDFviewer";
 
 export default function RoutesScreen() {
   const user_type = sessionStorage.getItem("user_type");
@@ -236,9 +238,17 @@ export default function RoutesScreen() {
             path="/view/student/marks/list"
             element={<StudentMarkList />}
           />
-            <Route
+          <Route
             path="/create/student/marks"
             element={<CreateAndEditStudentMarks />}
+          />
+          <Route
+            path="/repot/card/generate"
+            element={<ReporCard />}
+          />
+          <Route
+            path="/pdf/viewer"
+            element={<PDFviewer />}
           />
         </Routes>
         <LogoutComponent /> {/* Add the LogoutComponent here */}

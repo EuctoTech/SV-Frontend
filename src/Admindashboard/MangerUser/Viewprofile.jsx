@@ -104,7 +104,9 @@ const Viewprofile = () => {
       <Row>
         <Col xs={12} md={6}>
           <label className="staff-label">{label}</label>
-          <p onClick={onClick} className="photo-link-style">{value}</p>
+          <p onClick={onClick} className="photo-link-style">
+            {value}
+          </p>
         </Col>
       </Row>
     );
@@ -175,6 +177,13 @@ const Viewprofile = () => {
                     <Col xs={9}>
                       <Row className="py-4">
                         <Col className="d-flex ">
+                          <Col className="staff-label">Student Name</Col>
+                          <Col className="staff-label">:</Col>
+                        </Col>
+                        <Col className="staff-value">{data?.STUDENT_NAME}</Col>
+                      </Row>
+                      <Row className="py-4">
+                        <Col className="d-flex ">
                           <Col className="staff-label">Admission No</Col>
                           <Col className="staff-label">:</Col>
                         </Col>
@@ -197,11 +206,6 @@ const Viewprofile = () => {
                       />
                     </Col>
                   </Row>
-
-                  <CustomInputs
-                    label={"Student Name"}
-                    value={data?.STUDENT_NAME}
-                  />
 
                   <CustomInputs label={"Status"} value={data?.status} />
 
@@ -555,8 +559,8 @@ const Viewprofile = () => {
                           }`}
                           onClick={() =>
                             setModalOpen({
-                              image: urls[0] ,
-                              type: '',
+                              image: urls[0],
+                              type: "",
                               modalOpen: true,
                               title: "Profile Picture",
                               studentName: data?.STUDENT_NAME,
@@ -573,8 +577,8 @@ const Viewprofile = () => {
                           }`}
                           onClick={() =>
                             setModalOpen({
-                              image: urls[1] ,
-                              type: '',
+                              image: urls[1],
+                              type: "",
                               modalOpen: true,
                               title: "Birth Certificate",
                               studentName: data?.STUDENT_NAME,
@@ -593,8 +597,8 @@ const Viewprofile = () => {
                           }`}
                           onClick={() =>
                             setModalOpen({
-                              image: urls[2] ,
-                              type: '',
+                              image: urls[2],
+                              type: "",
                               modalOpen: true,
                               title: "Aadhar Copy",
                               studentName: data?.STUDENT_NAME,
@@ -611,8 +615,8 @@ const Viewprofile = () => {
                           }`}
                           onClick={() =>
                             setModalOpen({
-                              image: urls[3] ,
-                              type: '',
+                              image: urls[3],
+                              type: "",
                               modalOpen: true,
                               title: "Ration Card",
                               studentName: data?.STUDENT_NAME,
@@ -631,8 +635,8 @@ const Viewprofile = () => {
                           }`}
                           onClick={() =>
                             setModalOpen({
-                              image: urls[4] ,
-                              type: '',
+                              image: urls[4],
+                              type: "",
                               modalOpen: true,
                               title: "Community Certificate",
                               studentName: data?.STUDENT_NAME,
@@ -651,8 +655,8 @@ const Viewprofile = () => {
                           }`}
                           onClick={() =>
                             setModalOpen({
-                              image: urls[5] ,
-                              type: '',
+                              image: urls[5],
+                              type: "",
                               modalOpen: true,
                               title: "Salary Certificate",
                               studentName: data?.STUDENT_NAME,
@@ -670,8 +674,8 @@ const Viewprofile = () => {
                           }`}
                           onClick={() =>
                             setModalOpen({
-                              image: urls[6] ,
-                              type: '',
+                              image: urls[6],
+                              type: "",
                               modalOpen: true,
                               title: "Medical Certificate",
                               studentName: data?.STUDENT_NAME,
@@ -689,8 +693,8 @@ const Viewprofile = () => {
                           }`}
                           onClick={() =>
                             setModalOpen({
-                              image: urls[7] ,
-                              type: '',
+                              image: urls[7],
+                              type: "",
                               modalOpen: true,
                               title: "Reference Letter",
                               studentName: data?.STUDENT_NAME,
@@ -715,8 +719,8 @@ const Viewprofile = () => {
                           }`}
                           onClick={() =>
                             setModalOpen({
-                              image: urls[8] ,
-                              type: '',
+                              image: urls[8],
+                              type: "",
                               modalOpen: true,
                               title: "Transfer Certificate",
                               studentName: data?.STUDENT_NAME,
@@ -732,8 +736,8 @@ const Viewprofile = () => {
                           }`}
                           onClick={() =>
                             setModalOpen({
-                              image: urls[9] ,
-                              type: '',
+                              image: urls[9],
+                              type: "",
                               modalOpen: true,
                               title: "Migration Certificate",
                               studentName: data?.STUDENT_NAME,
@@ -762,8 +766,8 @@ const Viewprofile = () => {
                           }`}
                           onClick={() =>
                             setModalOpen({
-                              image: urls[10] ,
-                              type: '',
+                              image: urls[10],
+                              type: "",
                               modalOpen: true,
                               title: "Church Certificate",
                               studentName: data?.STUDENT_NAME,

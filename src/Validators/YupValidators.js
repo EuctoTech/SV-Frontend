@@ -141,6 +141,11 @@ export const studentEditValidator = (edit_type) =>
     ref_mobileNo1: Yup.string().required("Reference Mobile number is required"),
     ref_name2: Yup.string().required("Reference Name is required"),
     ref_mobileNo2: Yup.string().required("Reference Mobile number is required"),
+    student_section: Yup.string().when("status", {
+      is: "Active", // When status is "Active"
+      then: Yup.string().required("Section is required"), // Make sec required
+      otherwise: Yup.string().nullable(), // Make sec nullable otherwise
+    }),
   });
 
 export const handleStaffValidation = Yup.object().shape({
